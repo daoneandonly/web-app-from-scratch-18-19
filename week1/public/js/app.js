@@ -1,18 +1,19 @@
 console.log('Hello World')
 
 var main = document.querySelector('main')
-var currentNumber = 60
-var url = 'https://api.pokemontcg.io/v1/cards/base2-' + currentNumber
+var setCode = 'base2'
+var url = 'https://api.pokemontcg.io/v1/cards?setCode=' + setCode
 var input = document.querySelector('input')
+
+refreshTitle(setCode)
 
 // eventListener to any change on the input element
 input.addEventListener('change', () => {
-  currentNumber = input.value
-  url = 'https://api.pokemontcg.io/v1/cards/base2-' + currentNumber
-  console.log(currentNumber)
-  console.log(url)
+  setCode = input.value.toLowerCase()
+  url = 'https://api.pokemontcg.io/v1/cards?setCode=' + setCode
+  refreshTitle(setCode)
   request.open('GET', url, true)
-  request.send();
+  request.send()
  })
 
 // create new XHR
@@ -21,25 +22,41 @@ request.onload = function() {
     if (request.status == 200) {
       console.log("Loaded")
       var data = JSON.parse(request.responseText)
-      var currentCard = data.card.name + ' from ' + data.card.series + ' ' + data.card.set
-      document.title = currentCard
-      document.querySelector('h1').innerText = data.card.name + ' #' + data.card.number + ' ' + data.card.set
-      handleData(data)
+      handleAllCards(data)
   } else {
     console.log("Error!")
   }
 }
 
+function refreshTitle (set) {
+  var message = 'Now showing ' + set
+  document.querySelector('h1').innerText = message
+  document.title = message
+}
+
 // function that renders the text of the card
 
-function handleData(data){
-  console.log('data is handeled')
+function handleAllCards(data) {
+  var listOfCards = ''
+  // console.log(data.cards[0].attacks)
+  data.cards.forEach(function(data) {
+    listOfCards += handleSingleCard(data)
+  })
+  main.innerHTML = listOfCards
+}
+
+
+function handleSingleCard(data){
+  // console.log(data.name + " is rendered")
+
+
 
 // render the attack and call the costToImage function to load symbols
-  function renderAttacks() {
-    var attacks = ''
-    data.card.attacks.forEach( function(attack) {
-      attacks +=
+  function renderAttacks(attacks) {
+    var listOfAttacks = ''
+    if (attacks != undefined){
+    attacks.forEach(function(attack) {
+      listOfAttacks +=
         `<section class='singleAttack'>
           ${costToImage(attack.cost)}
           <h3>${attack.name}</h3>
@@ -48,8 +65,9 @@ function handleData(data){
         </section>
           `
       })
+    }
 
-      return attacks
+      return listOfAttacks
     }
 // loop through the text value of an attack and use the <i> as a symbol for every value
   function costToImage(cost){
@@ -62,26 +80,36 @@ function handleData(data){
   }
 // create a string of html for the card
   var format =`
-  <section class='left half'>
-    <img class='previewImage' src='${data.card.imageUrlHiRes}'/>
-  </section>
-  <section class='right half'>
-    <section class='name'>
-      <h3>${data.card.name}</h3>
-      <h3>HP: ${data.card.hp}</h3>
-      <p>${data.card.subtype}</p>
-      <p>Type: ${data.card.types}</p>
-    </section>
-    <section class='attack'>
-    ${renderAttacks()}
+  <section class="card">
 
-    <section>
-    <h3>Artist</h3><p>${data.card.artist}</p>
+    <section class='left half'>
+      <img class='previewImage' src='${data.imageUrlHiRes}'/>
     </section>
+
+    <section class='right half'>
+
+      <section class='name'>
+        <h3>${data.name}</h3>
+        <h3>HP: ${data.hp}</h3>
+        <p>${data.subtype}</p>
+        <p>Type: ${data.types}</p>
+      </section>
+
+      <section class='attack'>
+        ${renderAttacks(data.attacks)}
+      </section>
+
+      <section>
+        <h3>Artist</h3>
+        <p>${data.artist}</p>
+      </section>
+
+    </section>
+
   </section>
   `
 // insert format within main element
-  main.innerHTML = format
+  return format
 }
 
 //open en send initial request
