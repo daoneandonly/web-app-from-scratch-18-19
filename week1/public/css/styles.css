@@ -1,0 +1,110 @@
+* {
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+  margin: 0;
+}
+
+body {
+  font-family: 'Arial';
+  color: #BADA55;
+  background-color: white;
+  padding: 1%;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+main{
+  width: 75%;
+  margin-top: 2em;
+  display: flex;
+  flex-wrap: wrap:
+}
+
+.singleAttack {
+  margin-top: 1.1em;
+  border-top: .1em #BADA55 solid;
+  padding: .5em 0;
+}
+
+main h2 {
+  width: 100%;
+}
+
+main .left, main .right {
+  width: 50%;
+}
+
+.half {
+  width: 50%;
+}
+
+.left .previewImage {
+  width: 65%;
+  overflow:hidden;
+}
+
+.energy {
+  background-image: url('https://pokemontcg.io/assets/images/energy-types-f0fdba3b2e216b418fbedace0c050f36.png');
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  margin-right: .2em;
+}
+
+.fire {
+  background-position: 0 0;
+}
+
+.colorless {
+  background-position: -25px 0;
+}
+
+.lightning {
+  background-position: -25px -25px;
+}
+
+.fighting {
+  background-position: -50px -25px;
+}
+
+.fairy {
+  background-position: -50px 0;
+}
+
+.metal {
+  background-position: -75px 0;
+}
+
+.dragon {
+  background-position: 0 -25px;
+}
+
+.psychic {
+  background-position: -75px -25px;
+}
+
+.dragon {
+  background-position: 0 -25px;
+}
+
+.darkness {
+  background-position: 0 -50px;
+}
+
+.grass {
+  background-position: -25px -50px;
+}
+
+.water {
+  background-position: -75px -50px;
+}
+
+.water {
+  background-position: -75px -50px;
+}
+
+.damage {
+  color: #343434;
+}
