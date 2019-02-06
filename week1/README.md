@@ -2,6 +2,8 @@
 
 I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML.
 
+![Preview](../img/week1capture.png)
+
 ## Live demo
 
 [You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/week1/index.html)

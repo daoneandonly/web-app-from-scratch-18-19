@@ -2,13 +2,13 @@ console.log('Hello World')
 
 var main = document.querySelector('main')
 var currentNumber = 60
-var url = 'https://api.pokemontcg.io/v1/cards/base1-' + currentNumber
+var url = 'https://api.pokemontcg.io/v1/cards/base2-' + currentNumber
 var input = document.querySelector('input')
 
 // eventListener to any change on the input element
 input.addEventListener('change', () => {
   currentNumber = input.value
-  url = 'https://api.pokemontcg.io/v1/cards/base1-' + currentNumber
+  url = 'https://api.pokemontcg.io/v1/cards/base2-' + currentNumber
   console.log(currentNumber)
   console.log(url)
   request.open('GET', url, true)
