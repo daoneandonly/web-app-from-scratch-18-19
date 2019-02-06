@@ -1,6 +1,42 @@
+# Web app with Pokémon TCG api
+
+I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML.
+
+![Preview](/img/week1capture.PNG)
+
+## Live demo
+
+[You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/week1/index.html)
+
+##  My progression
+
+* [Week 1](/week1)
+* [Week 2](#)
+* [Week 3](#)
+
+
+## Goals
+
+### Things I have learned
+
+Here is a list of the things I have either never used or wasn't familiar with and had to use/master during this course:
+
+* Opening, receiving data with the use of an `XMLHttpRequest`
+* Using incomming data in JSON and manipulating it
+* Using template literals to export HTML with variables
+
+**Bonus**
+* Using a sprite and making use of it through js templating
+
+
+### I still want to learn
+
+* The use of GET request through `new Promise` and/or trough `fetch`
+* Using `map()` to filter and sort incomming JSON
+
+<!--
 # Web App From Scratch @cmda-minor-web 18-19
 
-In dit vak gaan we een web app maken zonder frameworks of onnodige libraries, dus zoveel mogelijk met native HTML, CSS & JavaScript. Het eindproduct is een modulair opgezet prototype voor een single page web app. Data wordt opgehaald uit een externe API, waar nodig gemanipuleerd en vervolgens getoond in de Web App. Je leert hoe je structuur aanbrengt in je code en hoe je hiermee 'from scratch' een (prototype voor een) web app maakt. Met deze kennis begrijp je daarnaast beter hoe bestaande api’s, libraries en frameworks werken.
 
 ## Leerdoelen
 - _Je kan structuur aanbrengen in je code door patterns toe te passen. Je kan de keuze voor de gekozen patterns beargumenteren_
@@ -35,7 +71,7 @@ Doel: Data manipuleren. Code splitsen in modules. Reflecteren op eindresultaat.
 [Opdrachten](https://drive.google.com/open?id=13pKQu72pshaEzKw9q5JHLa-aop85nMP6nDCdqioWjoQ)
 
 [Slides](https://drive.google.com/open?id=1BSzGYNLMgtHD4HRnK7f0DgyTv4Pg3xsQwD_eYNo7v0Y)
-
+ -->
 
 <!-- Add a link to your live demo in Github Pages 🌐-->
 

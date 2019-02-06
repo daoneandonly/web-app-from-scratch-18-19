@@ -32,5 +32,5 @@ where lightning corresponds to the sprite class in css.
 
 ## Planned refactors
 
-* Using map() instead of forEach() to loop through template literals
-* Using promise instead of  XHR
+* Using `map()` instead of `forEach()` to loop through template literals
+* Using `promise` instead of  `XMLHttpRequest`
