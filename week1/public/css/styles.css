@@ -15,11 +15,22 @@ h1 {
   font-size: 3em;
 }
 
-main{
-  width: 75%;
-  margin-top: 2em;
+main {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap:
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.card {
+  height: auto;
+  width: 50%;
+  margin: 3em auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: .5em;
+  /* border: .1em lightgrey solid; */
+  justify-content: space-between;
 }
 
 .singleAttack {
@@ -32,16 +43,22 @@ main h2 {
   width: 100%;
 }
 
-main .left, main .right {
-  width: 50%;
+main .left {
+  width: auto;
+  max-width: 50%;
 }
+
+ main .right {
+   width: 45%;
+ }
 
 .half {
   width: 50%;
 }
 
 .left .previewImage {
-  width: 65%;
+  width: 100%;
+  padding: 0 1em 1em 0;
   overflow:hidden;
 }
 
