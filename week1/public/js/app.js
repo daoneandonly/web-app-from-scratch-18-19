@@ -71,6 +71,7 @@ function handleSingleCard(data){
     }
 // loop through the text value of an attack and use the <i> as a symbol for every value
   function costToImage(cost){
+    if (cost === undefined){return}
     var totalCost = ''
     cost.forEach(function(element) {
       totalCost +=
@@ -92,7 +93,7 @@ function handleSingleCard(data){
         <h3>${data.name}</h3>
         <h3>HP: ${data.hp}</h3>
         <p>${data.subtype}</p>
-        <p>Type: ${data.types}</p>
+        <p>Type: ${ costToImage(data.types)}</p>
       </section>
 
       <section class='attack'>
