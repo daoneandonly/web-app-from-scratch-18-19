@@ -26,9 +26,11 @@ where lightning corresponds to the sprite class in css.
 
 ## Planned features
 
-* Requesting a set instead of a single cards
+* ~~Requesting a set instead of a single cards~~
+* ~~Changing requested set and cards through input field~~
 * Adding routing to go from set view to single card
-* Changing requested set and cards through Input
+* Adding search functionality through names
+* Adding search functionality through types
 
 ## Planned refactors
 
