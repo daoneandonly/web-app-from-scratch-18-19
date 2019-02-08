@@ -66,10 +66,10 @@
 				attacks.forEach((attack) => {
 					listOfAttacks +=
 					`<section class='singleAttack'>
-					${costToImage(attack.cost)}
-					<h3>${attack.name}</h3>
-					<p>${attack.text}</p>
-					<h3 class='damage'>${attack.damage}</h3>
+						${costToImage(attack.cost)}
+						<h3>${attack.name}</h3>
+						<p>${attack.text}</p>
+						<h3 class='damage'>${attack.damage}</h3>
 					</section>
 					`
 				})
@@ -90,31 +90,28 @@
 		// create a string of html for the card
 		let format =`
 		<section class="card">
+			<section class='left half'>
+				<img class='previewImage' src='${data.imageUrlHiRes}'/>
+				</section>
 
-		<section class='left half'>
-		<img class='previewImage' src='${data.imageUrlHiRes}'/>
-		</section>
+				<section class='right half'>
 
-		<section class='right half'>
+				<section class='name'>
+					<h3>${data.name}</h3>
+					<h3>HP: ${data.hp}</h3>
+					<p>${data.subtype}</p>
+					<p>Type: ${ costToImage(data.types)}</p>
+				</section>
 
-		<section class='name'>
-		<h3>${data.name}</h3>
-		<h3>HP: ${data.hp}</h3>
-		<p>${data.subtype}</p>
-		<p>Type: ${ costToImage(data.types)}</p>
-		</section>
+				<section class='attack'>
+					${renderAttacks(data.attacks)}
+				</section>
 
-		<section class='attack'>
-		${renderAttacks(data.attacks)}
-		</section>
-
-		<section>
-		<h3>Artist</h3>
-		<p>${data.artist}</p>
-		</section>
-
-		</section>
-
+				<section>
+					<h3>Artist</h3>
+					<p>${data.artist}</p>
+				</section>
+			</section>
 		</section>
 		`
 		// insert format within main element
