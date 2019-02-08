@@ -2,18 +2,19 @@
 	console.log('Hello Pokémon fan.')
 
 	const main = document.querySelector('main')
-	const url = 'https://api.pokemontcg.io/v1/cards?setCode=base2'
+	const defaultSet = 'base2';
+	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + defaultSet
 	const input = document.querySelector('input')
 
-	refreshTitle('base2')
+	refreshTitle(defaultSet)
 
 	function currentSet(setCode){
-		return setCode ? setCode : 'base2'
+		return setCode ? setCode : defaultSet
 	}
 
 	// eventListener to any change on the input element
 	input.addEventListener('change', (e) => {
-		const setCode = e.target.value.toLowerCase()
+		const setCode = e.target.value.toLowerCase() ? e.target.value.toLowerCase() : defaultSet
 	  const newUrl = 'https://api.pokemontcg.io/v1/cards?setCode=' + currentSet(setCode)
 	  refreshTitle(currentSet())
 	  request.open('GET', newUrl, true)
@@ -25,7 +26,7 @@
 	request.onload = () => {
 	    if (request.status == 200) {
 	      const data = JSON.parse(request.responseText)
-				console.log("The app loaded " + data.cards.length + " cards from set " + currentSet() + ".")
+				console.log("The app loaded " + data.cards.length + " cards from set " + currentSet(input.value.toLowerCase()) + ".")
 	      handleAllCards(data)
 				return
 	  	}
@@ -38,6 +39,7 @@
 
 	function refreshTitle (set) {
 	  const message = 'Now showing ' + set
+		input.placeholder = defaultSet;
 	  document.title = message
 	}
 
@@ -45,7 +47,6 @@
 
 	function handleAllCards(data) {
 	  let listOfCards = ''
-	  // console.log(data.cards[0].attacks)
 	  data.cards.forEach((data) => {
 	    listOfCards += handleSingleCard(data)
 	  })
