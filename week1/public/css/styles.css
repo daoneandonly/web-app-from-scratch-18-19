@@ -39,6 +39,33 @@ main {
   padding: .5em 0;
 }
 
+input[type="text"], input:focus {
+  font-family: arial;
+  font-size: 2em;
+  line-height: 2em;
+  border: none;
+  color: #BADA55;
+  outline: none;
+  font-weight: 600;
+  padding: .2em;
+  transition: .15s linear all;
+  border-bottom: 0em solid #BADA55;
+  width: auto;
+}
+
+input:focus {
+  transition: .15s linear all;
+  border-bottom: .1em solid #BADA55;
+
+}
+
+input::placeholder {
+  border: none;
+  color: #BADA55;
+  outline: none;
+}
+
+
 main h2 {
   width: 100%;
 }

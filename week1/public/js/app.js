@@ -38,7 +38,6 @@
 
 	function refreshTitle (set) {
 	  const message = 'Now showing ' + set
-	  document.querySelector('h1').innerText = message
 	  document.title = message
 	}
 
