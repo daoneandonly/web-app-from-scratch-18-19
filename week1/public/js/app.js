@@ -1,28 +1,31 @@
 (() => {
-	console.log('Hello World')
+	console.log('Hello Pokémon fan.')
 
-	var main = document.querySelector('main')
-	var setCode = 'base2'
-	var url = 'https://api.pokemontcg.io/v1/cards?setCode=' + setCode
-	var input = document.querySelector('input')
+	const main = document.querySelector('main')
+	const url = 'https://api.pokemontcg.io/v1/cards?setCode=base2'
+	const input = document.querySelector('input')
 
-	refreshTitle(setCode)
+	refreshTitle('base2')
+
+	function currentSet(setCode){
+		return setCode ? setCode : 'base2'
+	}
 
 	// eventListener to any change on the input element
-	input.addEventListener('change', () => {
-	  setCode = input.value.toLowerCase()
-	  url = 'https://api.pokemontcg.io/v1/cards?setCode=' + setCode
-	  refreshTitle(setCode)
-	  request.open('GET', url, true)
+	input.addEventListener('change', (e) => {
+		const setCode = e.target.value.toLowerCase()
+	  const newUrl = 'https://api.pokemontcg.io/v1/cards?setCode=' + currentSet(setCode)
+	  refreshTitle(currentSet())
+	  request.open('GET', newUrl, true)
 	  request.send()
 	 })
 
 	// create new XHR
-	var request = new XMLHttpRequest()
+	const request = new XMLHttpRequest()
 	request.onload = () => {
 	    if (request.status == 200) {
-	      console.log("Loaded")
-	      var data = JSON.parse(request.responseText)
+	      const data = JSON.parse(request.responseText)
+				console.log("The app loaded " + data.cards.length + " cards from set " + currentSet() + ".")
 	      handleAllCards(data)
 				return
 	  	}
@@ -34,7 +37,7 @@
 	}
 
 	function refreshTitle (set) {
-	  var message = 'Now showing ' + set
+	  const message = 'Now showing ' + set
 	  document.querySelector('h1').innerText = message
 	  document.title = message
 	}
@@ -42,7 +45,7 @@
 	// function that renders the text of the card
 
 	function handleAllCards(data) {
-	  var listOfCards = ''
+	  let listOfCards = ''
 	  // console.log(data.cards[0].attacks)
 	  data.cards.forEach((data) => {
 	    listOfCards += handleSingleCard(data)
@@ -58,7 +61,7 @@
 
 	// render the attack and call the costToImage function to load symbols
 	  function renderAttacks(attacks) {
-	    var listOfAttacks = ''
+	    let listOfAttacks = ''
 	    if (attacks){
 	    attacks.forEach((attack) => {
 	      listOfAttacks +=
@@ -77,7 +80,7 @@
 	// loop through the text value of an attack and use the <i> as a symbol for every value
 	  function costToImage(cost){
 	    if (cost === undefined){return}
-	    var totalCost = ''
+	    let totalCost = ''
 	    cost.forEach((element) => {
 	      totalCost +=
 	      `<i class='energy ${element.toLowerCase()}'></i>`
@@ -85,7 +88,7 @@
 	    return totalCost
 	  }
 	// create a string of html for the card
-	  var format =`
+	  let format =`
 	  <section class="card">
 
 	    <section class='left half'>
