@@ -23,8 +23,8 @@ request.onload = function() {
       console.log("Loaded")
       var data = JSON.parse(request.responseText)
       handleAllCards(data)
-  } else {
-    console.log("Error!")
+    } else {
+      console.log("Error!")
   }
 }
 
