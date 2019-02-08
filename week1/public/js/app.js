@@ -121,7 +121,7 @@
 	  return format
 	}
 
-	//open en send initial request
+	//open and send initial request
 	request.open('GET', url, true)
 	request.send()
 })()
