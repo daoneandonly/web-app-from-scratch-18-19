@@ -2,19 +2,19 @@
 	console.log('Hello Pokémon fan.')
 
 	const main = document.querySelector('main')
-	const defaultSet = 'base2';
-	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + defaultSet
+	const config = {'defaultSet':'base2'}
+	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + config.defaultSet
 	const input = document.querySelector('input')
 
-	refreshTitle(defaultSet)
+	refreshTitle(config.defaultSet)
 
 	function currentSet(setCode){
-		return setCode ? setCode : defaultSet
+		return setCode ? setCode : config.defaultSet
 	}
 
 	// eventListener to any change on the input element
 	input.addEventListener('change', (e) => {
-		const setCode = e.target.value.toLowerCase() ? e.target.value.toLowerCase() : defaultSet
+		const setCode = e.target.value.toLowerCase() ? e.target.value.toLowerCase() : config.defaultSet
 		const newUrl = 'https://api.pokemontcg.io/v1/cards?setCode=' + currentSet(setCode)
 		refreshTitle(currentSet())
 		request.open('GET', newUrl, true)
@@ -39,7 +39,7 @@
 
 	function refreshTitle (set) {
 		const message = 'Now showing ' + set
-		input.placeholder = defaultSet;
+		input.placeholder = config.defaultSet;
 		document.title = message
 	}
 
