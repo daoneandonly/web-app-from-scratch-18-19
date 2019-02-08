@@ -24,9 +24,13 @@
 	      console.log("Loaded")
 	      var data = JSON.parse(request.responseText)
 	      handleAllCards(data)
-	  } else {
-	    console.log("Error!")
-	  }
+				return
+	  	}
+			if (request.error){
+				console.log("Error!")
+				console.log(request.error)
+				return
+			}
 	}
 
 	function refreshTitle (set) {
