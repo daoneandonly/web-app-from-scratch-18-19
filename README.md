@@ -8,17 +8,16 @@ I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in a
 
 [You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/week1/index.html)
 
-##  Table of Contents
+## Table of Contents
 
-* Progression
-  * [Week 1](/week1)
-  * [Week 2](#)
-  * [Week 3](#)
-* [Goals](#Goals)
-  * [Things I have learned](#Things-I-have-learned)
-  * [Best Practices](#Best-practices)
-  * [I still want to Learn](#I-still-want-to-learn)  
-
+- Progression
+  - [Week 1](/week1)
+  - [Week 2](#)
+  - [Week 3](#)
+- [Goals](#Goals)
+  - [Things I have learned](#Things-I-have-learned)
+  - [Best Practices](#Best-practices)
+  - [I still want to Learn](#I-still-want-to-learn)
 
 ## Goals
 
@@ -26,24 +25,24 @@ I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in a
 
 Here is a list of the things I have either never used or wasn't familiar with and had to use/master during this course:
 
-* [x] Opening, receiving data with the use of an `XMLHttpRequest`
-* [x] Using incomming data in JSON and manipulating it
-* [x] Using template literals to export HTML with variables
-* [x] Using a sprite and making use of it through js templating
+- [x] Opening, receiving data with the use of an `XMLHttpRequest`
+- [x] Using incomming data in JSON and manipulating it
+- [x] Using template literals to export HTML with variables
+- [x] Using a sprite and making use of it through js templating
+- [x] Using `new Promise` to get a GET request
 
-###  Best practices
+### Best practices
 
 I have learned to use the follwing best practices.
 
-* [x] Using arrow functions consistently throughout my project
-* [x] Using an IIFE to section of certain parts of code
-* [x] Using a ternary operator instead of short if statements
-
+- [x] Using arrow functions consistently throughout my project
+- [x] Using an IIFE to section of certain parts of code
+- [x] Using a ternary operator instead of short if statements
 
 ### I still want to learn
 
-* [ ] The use of GET request through `new Promise` and/or trough `fetch`
-* [ ] Using `map()` to filter and sort incomming JSON
+- [ ] The use of GET request trough `fetch`
+- [ ] Using `map()` to filter and sort incomming JSON
 
 <!--
 # Web App From Scratch @cmda-minor-web 18-19
