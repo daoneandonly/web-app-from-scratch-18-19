@@ -11,10 +11,10 @@
   const url = config.baseURL + config.defaultSet
   const input = document.querySelector('input')
 
-  refreshTitle(config.defaultSet),
-    function currentSet(setCode) {
-      return setCode ? setCode : config.defaultSet
-    }
+  refreshTitle(config.defaultSet)
+  function currentSet(setCode) {
+    return setCode ? setCode : config.defaultSet
+  }
 
   // eventListener to any change on the input element
   input.addEventListener('change', e => {
