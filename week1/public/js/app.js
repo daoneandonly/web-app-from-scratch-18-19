@@ -22,33 +22,33 @@
     const setCode = inputValue ? inputValue : config.defaultSet
     const newUrl = config.baseURL + currentSet(setCode)
     refreshTitle(currentSet())
-    request.open('GET', newUrl, true)
-    request.send()
+    load(newUrl)
   })
 
   // create new XHR
-  const load = new Promise((resolve, reject) => {
-    const request = new XMLHttpRequest()
-    request.open('GET', url, true)
+  const load = a => {
+    new Promise((resolve, reject) => {
+      const request = new XMLHttpRequest()
+      request.open('GET', a, true)
 
-    request.onload = () => {
-      if (request.status == 200) {
-        const data = JSON.parse(request.responseText)
-        console.log(data.cards.length)
-        resolve(data)
+      request.onload = () => {
+        if (request.status == 200) {
+          const data = JSON.parse(request.responseText)
+          console.log('Loaded ' + data.cards.length + ' cards.')
+          resolve(data)
+        }
+        if (request.status >= 400) {
+          reject(error)
+          console.log('Something went wrong!')
+        }
       }
-      if (request.status >= 400) {
-        reject(error)
-        console.log('Something went wrong!')
-      }
-    }
-    //open and send initial request
-    request.send()
-  })
+      request.send()
+    }).then(data => {
+      handleAllCards(data)
+    })
+  }
 
-  load.then(data => {
-    handleAllCards(data)
-  })
+  load(url)
 
   function refreshTitle(set) {
     const message = 'Now showing ' + set
