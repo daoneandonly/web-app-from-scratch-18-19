@@ -29,7 +29,8 @@ Here is a list of the things I have either never used or wasn't familiar with an
 - [x] Using incomming data in JSON and manipulating it
 - [x] Using template literals to export HTML with variables
 - [x] Using a sprite and making use of it through js templating
-- [x] Using `new Promise` to get a GET request
+- [x] Using `new Promise` to get a GET request [(as demonstrated here)](https://codepen.io/Pantheratnight/pen/KJRVeQ)
+- [x] Returning that new Promise as variable so I can give it some data
 
 ### Best practices
 
