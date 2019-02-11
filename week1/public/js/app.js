@@ -1,9 +1,13 @@
 (() => {
+	"use strict";
+
 	console.log('Hello Pokémon fan.')
 
 	const main = document.querySelector('main')
-	const config = {'defaultSet':'base2'}
-	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + config.defaultSet
+	const config =
+	{'defaultSet':'base2'
+		'baseURL': 'https://api.pokemontcg.io/v1/cards?setCode='}
+	const url = config.baseURL + config.defaultSet
 	const input = document.querySelector('input')
 
 	refreshTitle(config.defaultSet)
@@ -44,7 +48,6 @@
 	}
 
 	// function that renders the text of the card
-
 	function handleAllCards(data) {
 		let listOfCards = ''
 		data.cards.forEach((data) => {
@@ -53,7 +56,7 @@
 		main.innerHTML = listOfCards
 	}
 
-
+	// function that handles individual cards
 	function handleSingleCard(data){
 		// console.log(data.name + " is rendered")
 
