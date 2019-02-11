@@ -6,9 +6,9 @@
   const main = document.querySelector('main')
   const config = {
     defaultSet: 'base2',
-    baseURL: 'https://api.pokemontcg.io/v1/cards?setCode='
+    baseUrl: 'https://api.pokemontcg.io/v1/cards?setCode='
   }
-  const url = config.baseURL + config.defaultSet
+  const url = config.baseUrl + config.defaultSet
   const input = document.querySelector('input')
 
   refreshTitle(config.defaultSet)
@@ -20,18 +20,19 @@
   input.addEventListener('change', e => {
     const inputValue = e.target.value.toLowerCase()
     const setCode = inputValue ? inputValue : config.defaultSet
-    const newUrl = config.baseURL + currentSet(setCode)
+    const newUrl = config.baseUrl + currentSet(setCode)
     refreshTitle(currentSet())
-    load(newUrl)
+    load(newUrl).then(data => {
+      handleAllCards(data)
+    })
   })
 
   // create new XHR
-  const load = a => {
-    new Promise((resolve, reject) => {
+  const load = variableUrl => {
+    return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest()
-      request.open('GET', a, true)
-
-      request.onload = () => {
+      request.open('GET', variableUrl, true)
+      request.addEventListener('load', () => {
         if (request.status == 200) {
           const data = JSON.parse(request.responseText)
           console.log('Loaded ' + data.cards.length + ' cards.')
@@ -41,14 +42,14 @@
           reject(error)
           console.log('Something went wrong!')
         }
-      }
+      })
       request.send()
-    }).then(data => {
-      handleAllCards(data)
     })
   }
 
-  load(url)
+  load(url).then(data => {
+    handleAllCards(data)
+  })
 
   function refreshTitle(set) {
     const message = 'Now showing ' + set
@@ -91,11 +92,10 @@
       if (cost === undefined) {
         return
       }
-      let totalCost = ''
-      cost.forEach(element => {
-        totalCost += `<i class='energy ${element.toLowerCase()}'></i>`
+      let totalCost = cost.map(element => {
+        return `<i class='energy ${element.toLowerCase()}'></i>`
       })
-      return totalCost
+      return totalCost.join('')
     }
     // create a string of html for the card
     let format = `
