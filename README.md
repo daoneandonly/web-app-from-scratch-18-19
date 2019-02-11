@@ -37,6 +37,7 @@ I have learned to use the follwing best practices.
 
 * [x] Using arrow functions consistently throughout my project
 * [x] Using an IIFE to section of certain parts of code
+* [x] Using a ternary operator instead of short if statements
 
 
 ### I still want to learn
