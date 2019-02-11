@@ -18,37 +18,37 @@
 
   // eventListener to any change on the input element
   input.addEventListener('change', e => {
-    const setCode = e.target.value.toLowerCase()
-      ? e.target.value.toLowerCase()
-      : config.defaultSet
-    const newUrl =
-      'https://api.pokemontcg.io/v1/cards?setCode=' + currentSet(setCode)
+    const inputValue = e.target.value.toLowerCase()
+    const setCode = inputValue ? inputValue : config.defaultSet
+    const newUrl = config.baseURL + currentSet(setCode)
     refreshTitle(currentSet())
     request.open('GET', newUrl, true)
     request.send()
   })
 
   // create new XHR
-  const request = new XMLHttpRequest()
-  request.onload = () => {
-    if (request.status == 200) {
-      const data = JSON.parse(request.responseText)
-      console.log(
-        'The app loaded ' +
-          data.cards.length +
-          ' cards from set ' +
-          currentSet(input.value.toLowerCase()) +
-          '.'
-      )
-      handleAllCards(data)
-      return
+  const load = new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest()
+    request.open('GET', url, true)
+
+    request.onload = () => {
+      if (request.status == 200) {
+        const data = JSON.parse(request.responseText)
+        console.log(data.cards.length)
+        resolve(data)
+      }
+      if (request.status >= 400) {
+        reject(error)
+        console.log('Something went wrong!')
+      }
     }
-    if (request.error) {
-      console.log('Error!')
-      console.log(request.error)
-      return
-    }
-  }
+    //open and send initial request
+    request.send()
+  })
+
+  load.then(data => {
+    handleAllCards(data)
+  })
 
   function refreshTitle(set) {
     const message = 'Now showing ' + set
@@ -127,8 +127,4 @@
     // insert format within main element
     return format
   }
-
-  //open and send initial request
-  request.open('GET', url, true)
-  request.send()
 })()
