@@ -131,6 +131,7 @@
 
 				<section class='cardAttacks'>
 					${renderAttacks(data.attacks)}
+					${checkEmpty(data.text, 'p')}
 				</section>
 
 				<section class="cardArtist">
