@@ -5,7 +5,7 @@
 
   const main = document.querySelector('main')
   const config = {
-    defaultSet: 'base2',
+    defaultSet: 'sm2',
     baseUrl: 'https://api.pokemontcg.io/v1/cards?setCode='
   }
   const url = config.baseUrl + config.defaultSet
@@ -66,6 +66,13 @@
     main.innerHTML = listOfCards
   }
 
+  function checkEmpty(renderValue, element) {
+    if (renderValue) {
+      return `<${element}>${renderValue}</${element}>`
+    }
+    return ''
+  }
+
   // function that handles individual cards
   function handleSingleCard(data) {
     // console.log(data.name + " is rendered")
@@ -76,12 +83,19 @@
       if (attacks) {
         attacks.forEach(attack => {
           listOfAttacks += `<section class='singleAttack'>
-						${costToImage(attack.cost)}
-						<h3>${attack.name}</h3>
-						<p>${attack.text}</p>
-						<h3 class='damage'>${attack.damage}</h3>
-					</section>
-					`
+						<section class="attackCost">
+							${costToImage(attack.cost)}
+						</section>
+						<section class='attackName'>
+							<h3>${attack.name}</h3>
+						</section>
+						<section class='attackDamage'>
+							${checkEmpty(attack.damage, 'h3')}
+						</section>
+						<section class="attackDescription">
+							<p>${attack.text}</p>
+						</section>
+					</section>`
         })
       }
 
@@ -90,7 +104,7 @@
     // loop through the text value of an attack and use the <i> as a symbol for every value
     function costToImage(cost) {
       if (cost === undefined) {
-        return
+        return ''
       }
       let totalCost = cost.map(element => {
         return `<i class='energy ${element.toLowerCase()}'></i>`
@@ -106,19 +120,21 @@
 
 				<section class='right half'>
 
-				<section class='name'>
+				<section class='cardDetails'>
 					<h3>${data.name}</h3>
-					<h3>HP: ${data.hp}</h3>
+					<section class='detailsHp'>
+						${checkEmpty(data.hp, 'h3')}
+						${checkEmpty(costToImage(data.types), 'p')}
+					</section>
 					<p>${data.subtype}</p>
-					<p>Type: ${costToImage(data.types)}</p>
 				</section>
 
-				<section class='attack'>
+				<section class='cardAttacks'>
 					${renderAttacks(data.attacks)}
 				</section>
 
-				<section>
-					<h3>Artist</h3>
+				<section class="cardArtist">
+					<h3>Artist:</h3>
 					<p>${data.artist}</p>
 				</section>
 			</section>
