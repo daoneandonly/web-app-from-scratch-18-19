@@ -48,6 +48,10 @@
   }
 
   load(url).then(data => {
+    // const data2 = data.cards.filter(
+    //   a => a.rarity == 'Rare'
+    // )
+    // console.log(data2)
     handleAllCards(data)
   })
 
@@ -59,11 +63,11 @@
 
   // function that renders the text of the card
   function handleAllCards(data) {
-    let listOfCards = ''
-    data.cards.forEach(data => {
-      listOfCards += handleSingleCard(data)
+    const filterData = data.cards.filter(x => x.types == 'Fire')
+    let listOfCards = filterData.map(data => {
+      return handleSingleCard(data)
     })
-    main.innerHTML = listOfCards
+    main.innerHTML = listOfCards.join('')
   }
 
   function checkEmpty(renderValue, element) {
