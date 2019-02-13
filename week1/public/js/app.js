@@ -6,7 +6,7 @@
   const main = document.querySelector('main')
   const config = {
     defaultSet: 'sm2',
-    baseUrl: 'https://api.pokemontcg.io/v1/cards?setCode='
+    baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=170&setCode='
   }
   const url = config.baseUrl + config.defaultSet
   const input = document.querySelector('input')
@@ -67,7 +67,13 @@
     let listOfCards = filterData.map(data => {
       return handleSingleCard(data)
     })
-    main.innerHTML = listOfCards.join('')
+    console.log(listOfCards.length)
+    if (listOfCards.length == 0) {
+      main.innerHTML = '<h1>No cards found :( </h1>'
+    }
+    if (listOfCards.length > 0) {
+      main.innerHTML = listOfCards.join('')
+    }
   }
 
   function checkEmpty(renderValue, element) {
