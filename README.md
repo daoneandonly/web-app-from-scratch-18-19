@@ -39,11 +39,13 @@ I have learned to use the follwing best practices.
 - [x] Using arrow functions consistently throughout my project
 - [x] Using an IIFE to section of certain parts of code
 - [x] Using a ternary operator instead of short if statements
+- [x] Using `map()` to iterate over data
+- [x] Using `filter()` to filter and sort incomming JSON
+- [x] Using Object literals to group bits of code and make it more readable
 
 ### I still want to learn
 
 - [ ] The use of GET request trough `fetch`
-- [ ] Using `map()` to filter and sort incomming JSON
 
 <!--
 # Web App From Scratch @cmda-minor-web 18-19
