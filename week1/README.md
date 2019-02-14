@@ -2,7 +2,6 @@
 
 I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in info about The Pokémon Trading Card in JSON and show its content HTML.
 
-
 My single iteration showed only a single card.
 ![Preview](../img/week1capture.PNG)
 
@@ -17,7 +16,9 @@ In the current version the site renders a list with multiple cards.
 
 Earlier this week I started my concept as a single card page. It renders the card as following:
 
-```js
+<details>
+<summary>JS card output HTML</summary>
+```javascript
 <section class="card">
   <section class='left half'>
     <img class='previewImage' src='${data.imageUrlHiRes}'/>
@@ -39,10 +40,13 @@ Earlier this week I started my concept as a single card page. It renders the car
   </section>
 </section>
 ```
+</details>
 
+---
 
 In the `<section class="attack">` element, the individual attacks gets rendered with the `renderAttacks()` function.
 
+<details><summary>JS attack output HTML</summary>
 ```js
 function renderAttacks(attacks) {
   var listOfAttacks = ''
@@ -58,9 +62,13 @@ function renderAttacks(attacks) {
     })
   }
 ```
+</details>
+
+---
 
 In the `costToImage()` function it renders the value that comes out of `data.cards.attacks` as an empty `<i>` element with the type as a class.
 
+<details><summary>JS image output HTML</summary>
 ```js
 function costToImage(cost){
   if (cost === undefined){return}
@@ -71,8 +79,11 @@ function costToImage(cost){
   })
   return totalCost
 }
+`
 ```
+</details>
 
+---
 
 # Features
 
@@ -84,23 +95,20 @@ Currently, the app starts with the API request for the card `base2-60`. With the
 
 The app uses a sprite to render the image of any type symbol. The `costToImage(lightning)` function renders
 
-```html
-<i class='energy lightning'>
-```
-where lightning corresponds to the sprite class in css.
+`<i class='energy lightning'>`
 
+where lightning corresponds to the sprite class in css.
 
 ## Planned features
 
 - [x] Requesting a set instead of a single cards
 - [x] Changing requested set and cards through input field
 
-
-- [ ] Adding routing to go from set view to single card
-- [ ] Adding search functionality through names
-- [ ] Adding search functionality through types
+* [ ] Adding routing to go from set view to single card
+* [ ] Adding search functionality through names
+* [ ] Adding search functionality through types
 
 ## Planned refactor
 
 - [ ] Using `map()` instead of `forEach()` to loop through template literals
-- [ ] Using `promise` instead of  `XMLHttpRequest`
+- [ ] Using `promise` instead of `XMLHttpRequest`
