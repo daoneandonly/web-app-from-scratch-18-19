@@ -24,8 +24,8 @@
         request.open('GET', variableUrl, true)
         request.addEventListener('load', () => {
           if (request.status == 200) {
-            const data = JSON.parse(request.responseText)
-            console.log('Loaded ' + data.cards.length + ' cards.')
+            const data = api.parse(request.responseText)
+            console.log('Api returned ' + data.cards.length + ' cards')
             resolve(data)
           }
           if (request.status >= 400) {
@@ -36,22 +36,28 @@
         request.send()
       })
     },
-    parse: '',
-    filter: (data, key, filterWord) => {
-      let filterData = data.filter(x => x[key] == filterWord)
-      return filterData
+    parse: responseText => {
+      return JSON.parse(responseText)
+    },
+    filter: (data, b, filterWord) => {
+      console.log(data, b, filterWord)
+      if (filterWord == '') {
+        return data
+      }
+      let filterData = data.cards.filter(x => x[b] == filterWord)
+      return { cards: filterData }
     }
   }
 
   const render = {
     allCards: data => {
       // function that renders the text of the card
-      const filterData = api.filter(data.cards, 'types', 'Fire')
-      let listOfCards = filterData.map(data => {
+      // const filterData = api.filter(data.cards, 'types', 'Fire')
+      let listOfCards = data.cards.map(data => {
         return render.singleCard(data)
       })
 
-      console.log('The total of cards I have filtered: ' + listOfCards.length)
+      console.log('App filtered ' + listOfCards.length + ' cards')
       if (listOfCards.length == 0) {
         main.innerHTML = '<h1>No cards found :( </h1>'
       }
@@ -145,12 +151,21 @@
 
   // eventListener to any change on the input element
   input.addEventListener('change', e => {
-    const inputValue = e.target.value.toLowerCase()
-    const setCode = inputValue ? inputValue : config.defaultSet
-    const newUrl = config.baseUrl + config.currentSet(setCode)
-    render.refreshTitle(config.currentSet())
-    api.load(newUrl).then(data => {
-      render.allCards(data)
+    // const inputValue = e.target.value.toLowerCase()
+    // const setCode = inputValue ? inputValue : config.defaultSet
+    // const newUrl = config.baseUrl + config.currentSet(setCode)
+    // render.refreshTitle(config.currentSet())
+    // api.load(newUrl).then(data => {
+    //   render.allCards(data)
+    // })
+    const inputValue =
+      e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)
+    // console.log(inputValue)
+    // api.filter(data.cards, 'types', inputValue)
+    api.load(url).then(data => {
+      const newData = api.filter(data, 'types', inputValue)
+      console.log(newData)
+      render.allCards(newData)
     })
   })
 
