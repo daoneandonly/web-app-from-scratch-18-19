@@ -2,7 +2,7 @@
 
 I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML.
 
-![Preview](/img/week1capture.PNG)
+![Preview](/img/week2capture1.PNG)
 
 ## Live demo
 
