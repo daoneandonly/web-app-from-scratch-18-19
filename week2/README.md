@@ -1,7 +1,9 @@
-# Week 2 - Design and Refactor 🛠
+# Web App with Pokémon TCG api
 
-Doel: Breakdown maken van de web app. Routes en states toevoegen. Detailpagina renderen.
+I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in info about The Pokémon Trading Card in JSON and show its content HTML.
 
-[Opdrachten](https://drive.google.com/open?id=1GMDTdW3LycAYpZSFI6gk_lrKrx8-zLWrNh69aaVEH5Y)
+![Preview](../img/week2capture1.png)
 
-[Slides](https://drive.google.com/open?id=1IqQeu1m0dQiSC_KCvrn8eencAgtYe7X6qT-gm0n9Bmc)
+## Live demo
+
+[You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/week1/index.html)

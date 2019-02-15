@@ -5,7 +5,7 @@
 
   const main = document.querySelector('main')
   const config = {
-    defaultSet: 'sm2',
+    defaultSet: 'sm9',
     baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=170&setCode=',
     currentSet: setCode => {
       // check what set should be loaded
@@ -16,7 +16,17 @@
   const input = document.querySelector('input')
 
   const router = {}
-
+  const utility = {
+    capitalize: word => {
+      return word.charAt(0).toUpperCase() + word.slice(1)
+    },
+    multiFilter: (data, listOfFilters, filterWord) => {\
+			let filteredObject = {}
+      listOfFilters.forEach(singleFilter => {
+        api.filter(data, singleFilter, filterWord)
+      })
+    }
+  }
   const api = {
     load: variableUrl => {
       return new Promise((resolve, reject) => {
@@ -40,19 +50,32 @@
       return JSON.parse(responseText)
     },
     filter: (data, b, filterWord) => {
-      console.log(data, b, filterWord)
+      let filterWordCapitalized = utility.capitalize(filterWord)
+      console.log(
+        'Filtering for the word ' + filterWord + ' in the category "' + b + '"'
+      )
       if (filterWord == '') {
         return data
       }
-      let filterData = data.cards.filter(x => x[b] == filterWord)
+      let filterData = data.cards.filter(x => {
+        if (x[b] === undefined) {
+          return false
+        }
+        if (
+          x[b].includes(filterWord) ||
+          x[b].includes(filterWordCapitalized) ||
+          x[b][0].includes(filterWord) ||
+          x[b][0].includes(filterWordCapitalized)
+        ) {
+          return true
+        }
+      })
       return { cards: filterData }
     }
   }
-
   const render = {
     allCards: data => {
       // function that renders the text of the card
-      // const filterData = api.filter(data.cards, 'types', 'Fire')
       let listOfCards = data.cards.map(data => {
         return render.singleCard(data)
       })
@@ -151,20 +174,10 @@
 
   // eventListener to any change on the input element
   input.addEventListener('change', e => {
-    // const inputValue = e.target.value.toLowerCase()
-    // const setCode = inputValue ? inputValue : config.defaultSet
-    // const newUrl = config.baseUrl + config.currentSet(setCode)
-    // render.refreshTitle(config.currentSet())
-    // api.load(newUrl).then(data => {
-    //   render.allCards(data)
-    // })
-    const inputValue =
-      e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)
-    // console.log(inputValue)
-    // api.filter(data.cards, 'types', inputValue)
+    const inputValue = e.target.value
+		const
     api.load(url).then(data => {
-      const newData = api.filter(data, 'types', inputValue)
-      console.log(newData)
+      const newData = api.filter(data, 'name', inputValue)
       render.allCards(newData)
     })
   })
