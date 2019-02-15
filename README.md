@@ -12,7 +12,7 @@ I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in a
 
 - Progression
   - [Week 1](/week1)
-  - [Week 2](#)
+  - [Week 2](/week2)
   - [Week 3](#)
 - [Goals](#Goals)
   - [Things I have learned](#Things-I-have-learned)
@@ -20,6 +20,15 @@ I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in a
   - [I still want to Learn](#I-still-want-to-learn)
 
 ## Goals
+
+### Best practices
+
+I have learned to use the follwing best practices.
+
+- [x] Using arrow functions consistently throughout my project
+- [x] Using an IIFE to section of certain parts of code
+- [x] Using a ternary operator instead of short if statements
+- [x] Using Object literals to group bits of code and make it more readable
 
 ### Things I have learned
 
@@ -31,17 +40,8 @@ Here is a list of the things I have either never used or wasn't familiar with an
 - [x] Using a sprite and making use of it through js templating
 - [x] Using `new Promise` to get a GET request [(as demonstrated here)](https://codepen.io/Pantheratnight/pen/KJRVeQ)
 - [x] Returning that new Promise as variable so I can give it some data
-
-### Best practices
-
-I have learned to use the follwing best practices.
-
-- [x] Using arrow functions consistently throughout my project
-- [x] Using an IIFE to section of certain parts of code
-- [x] Using a ternary operator instead of short if statements
 - [x] Using `map()` to iterate over data
 - [x] Using `filter()` to filter and sort incoming JSON
-- [x] Using Object literals to group bits of code and make it more readable
 
 ### I still want to learn
 
