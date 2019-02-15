@@ -19,13 +19,13 @@
   const utility = {
     capitalize: word => {
       return word.charAt(0).toUpperCase() + word.slice(1)
-    },
-    multiFilter: (data, listOfFilters, filterWord) => {\
-			let filteredObject = {}
-      listOfFilters.forEach(singleFilter => {
-        api.filter(data, singleFilter, filterWord)
-      })
     }
+    // multiFilter: (data, listOfFilters, filterWord) => {\
+    // 	let filteredObject = {}
+    //   listOfFilters.forEach(singleFilter => {
+    //     api.filter(data, singleFilter, filterWord)
+    //   })
+    // }
   }
   const api = {
     load: variableUrl => {
@@ -175,7 +175,6 @@
   // eventListener to any change on the input element
   input.addEventListener('change', e => {
     const inputValue = e.target.value
-		const
     api.load(url).then(data => {
       const newData = api.filter(data, 'name', inputValue)
       render.allCards(newData)
