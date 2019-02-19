@@ -119,6 +119,14 @@ main .left img {
   width: 95%;
   height: 95%;
   max-height: 80vh;
+  transform-origin: center;
+  transition: 0.15s linear all;
+}
+
+main .card:hover img {
+  transform-origin: center;
+  transition: 0.15s ease-in-out all;
+  transform: scale(1.025);
 }
 
 main .right {

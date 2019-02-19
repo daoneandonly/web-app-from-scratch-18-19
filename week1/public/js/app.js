@@ -15,7 +15,6 @@
   const url = config.baseUrl + config.defaultSet
   const input = document.querySelector('input')
 
-  const router = {}
   const utility = {
     capitalize: word => {
       return word.charAt(0).toUpperCase() + word.slice(1)
@@ -31,11 +30,12 @@
     load: variableUrl => {
       return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest()
+        console.log('Requesting data from API')
         request.open('GET', variableUrl, true)
         request.addEventListener('load', () => {
           if (request.status == 200) {
             const data = api.parse(request.responseText)
-            console.log('Api returned ' + data.cards.length + ' cards')
+            console.log('API returned ' + data.cards.length + ' cards')
             resolve(data)
           }
           if (request.status >= 400) {
@@ -50,9 +50,12 @@
       return JSON.parse(responseText)
     },
     filter: (data, b, filterWord) => {
-      let filterWordCapitalized = utility.capitalize(filterWord)
       console.log(
-        'Filtering for the word ' + filterWord + ' in the category "' + b + '"'
+        'Filtering for the word "' +
+          filterWord +
+          '" in the category "' +
+          b +
+          '"'
       )
       if (filterWord == '') {
         return data
@@ -61,26 +64,49 @@
         if (x[b] === undefined) {
           return false
         }
-        if (
-          x[b].includes(filterWord) ||
-          x[b].includes(filterWordCapitalized) ||
-          x[b][0].includes(filterWord) ||
-          x[b][0].includes(filterWordCapitalized)
-        ) {
+        if (x[b].toLowerCase().includes(filterWord.toLowerCase())) {
           return true
         }
       })
       return { cards: filterData }
     }
   }
+
+  routie({
+    '': () => {
+      api.load(url).then(data => {
+        console.log('Routie on route "/" is triggered.')
+        render.allCards(data)
+      })
+    },
+    overview: () => {
+      api.load(url).then(data => {
+        console.log('Routie on route "overview" is triggered.')
+        render.allCards(data)
+      })
+    },
+    '/cards/:id': id => {
+      api.load(url).then(data => {
+        const currentCard = api.filter(data, 'id', id).cards
+        console.log(
+          'Showing single page for ' +
+            currentCard.length +
+            ' card with name "' +
+            currentCard[0].name +
+            '"'
+        )
+        main.innerHTML = render.singleCard(currentCard[0])
+      })
+    }
+  })
+
   const render = {
     allCards: data => {
       // function that renders the text of the card
       let listOfCards = data.cards.map(data => {
         return render.singleCard(data)
       })
-
-      console.log('App filtered ' + listOfCards.length + ' cards')
+      console.log('Rendered ' + listOfCards.length + ' cards')
       if (listOfCards.length == 0) {
         main.innerHTML = '<h1>No cards found :( </h1>'
       }
@@ -94,7 +120,9 @@
       let format = `
 			<section class="card">
 				<section class='left half'>
-					<img class='previewImage' src='${data.imageUrlHiRes}'/>
+					<a href="#/cards/${data.id}">
+						<img class='previewImage' src='${data.imageUrlHiRes}'/>
+					</a>
 					</section>
 
 					<section class='right half'>
@@ -158,8 +186,8 @@
     },
     refreshTitle: newSet => {
       const message = 'Now showing ' + newSet
-      input.placeholder = config.defaultSet
-      document.title = message
+      input.placeholder = 'Search by name'
+      document.title = 'PokémonTCG Webapp'
     },
     checkEmpty: (renderValue, element) => {
       if (renderValue) {
@@ -176,12 +204,9 @@
   input.addEventListener('change', e => {
     const inputValue = e.target.value
     api.load(url).then(data => {
+      console.log('Heard a change on Input')
       const newData = api.filter(data, 'name', inputValue)
       render.allCards(newData)
     })
-  })
-
-  api.load(url).then(data => {
-    render.allCards(data)
   })
 })()
