@@ -1,29 +1,86 @@
 # Web app with Pokémon TCG api
 
-I'm using the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML.
+This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML. It gives you the ability to search through the entire Pokémon TCG Database and
 
 ![Preview](/img/week2capture1.png)
 
-## Live demo
-
-[You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/week1/index.html)
+---
 
 ## Table of Contents
 
-- Progression
-  - [Week 1](/week1)
-  - [Week 2](/week2)
-  - [Week 3](#)
-- [Goals](#Goals)
+- [Live demo](#Live-demo)
+- [Features](#Features)
+  - [Searching](#Searching)
+  - [Upcomming features](#Upcomming-features)
+- [Functionality](#Functionality)
+  - [Actor Diagram](#actor-diagram)
+  - [Flow Diagram](#flow-diagram)
+  - [Code snippets](#code-snippets)
+- [Personal Progression](#Progression)
+  - [Best practices](#Best-practices)
   - [Things I have learned](#Things-I-have-learned)
-  - [Best Practices](#Best-practices)
-  - [I still want to Learn](#I-still-want-to-learn)
+  - [Have yet to learn](#have-yet-to-learn)
 
-## Goals
+---
+
+## Live demo
+
+[You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/public/index.html)
+
+## Features
+
+### Searching
+
+The app starts with the API request for the set `sm9` (which is Sun & Moon 9, the most recent released set). With the input field you can search within that set for individual cards by name.
+
+### Current features
+
+- [x] Requesting a set instead of a single cards
+- [x] Changing requested set and cards through input field
+- [x] Adding search functionality through names
+- [x] Adding routing to go from set view to single card
+
+### Upcomming features
+
+- [ ] Adding search functionality through multiple fields (Name, attack, type)
+- [ ] Changing sets through a dropdown or overview
+- [ ] Searching through the entire database by name
+- [ ] Show other cards by the same name in the detail page
+
+---
+
+## Functionality
+
+### Actor Diagram
+
+`Pending image`
+
+### Flow Diagram
+
+`Pending image`
+
+### Code snippets
+
+Here are some snippets to see how the code actually works
+
+- [How a single card gets rendered](docs/code-examples.md#single-card)
+- [How attacks gets rendered](docs/code-examples.md#attacks)
+- [How cost of an attack gets rendered](docs/code-examples.md#Cost-to-Image)
+
+### Planned refactors
+
+- [x] Using `map()` instead of `forEach()` to loop through template literals
+- [x] Using `promise` instead of `XMLHttpRequest`
+- [ ] Use a different route for a every search entry
+- [ ] Using Local storage to limit the amount of API requests needed
+
+---
+
+## Progression
 
 ### Best practices
 
-I have learned to use the follwing best practices.
+I have learned to use the following best practices
 
 - [x] Using arrow functions consistently throughout my project
 - [x] Using an IIFE to section of certain parts of code
@@ -43,9 +100,9 @@ Here is a list of the things I have either never used or wasn't familiar with an
 - [x] Using `map()` to iterate over data
 - [x] Using `filter()` to filter and sort incoming JSON
 
-### I still want to learn
+### Have yet to learn
 
-- [ ] The use of GET request trough `fetch`
+- [ ] Using `fetch` to call an API GET request
 
 <!--
 # Web App From Scratch @cmda-minor-web 18-19
