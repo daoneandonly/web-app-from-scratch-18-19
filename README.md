@@ -53,6 +53,8 @@ The app starts with the API request for the set `sm9` (which is Sun & Moon 9, th
 
 ### Actor Diagram
 
+The following diagram shows the workings of my application in a simplified manner. It shows how different parts of code interact with each other.
+
 ![Actor Diagram](img/actor-diagram.png)
 
 ### Flow Diagram
