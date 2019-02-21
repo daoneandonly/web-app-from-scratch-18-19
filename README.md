@@ -53,7 +53,7 @@ The app starts with the API request for the set `sm9` (which is Sun & Moon 9, th
 
 ### Actor Diagram
 
-`Pending image`
+![Actor Diagram](img/actor-diagram.png)
 
 ### Flow Diagram
 
