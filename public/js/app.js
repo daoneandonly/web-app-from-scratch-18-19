@@ -221,6 +221,9 @@
           if (radioStatus[1].checked) {
             window.location.hash = '/search&type=' + inputValue
           }
+          if (radioStatus[2].checked) {
+            window.location.hash = '/search&rarity=' + inputValue
+          }
         }
       })
     },
@@ -311,6 +314,23 @@
         api.load().then(data => {
           console.log(data)
           const newData = api.filter(data, 'types', inputValue)
+          render.allCards(newData)
+        })
+      }
+    },
+    '/search&rarity=:inputValue': inputValue => {
+      console.log('Searching for RARITY: ' + inputValue)
+      const localData = utility.getStorage()
+      if (localData != '') {
+        console.log('Found local data for a search entree')
+        console.log(localData)
+        const newData = api.filter(localData, 'rarity', inputValue)
+        render.allCards(newData)
+      }
+      if (localData == undefined) {
+        api.load().then(data => {
+          console.log(data)
+          const newData = api.filter(data, 'rarity', inputValue)
           render.allCards(newData)
         })
       }
