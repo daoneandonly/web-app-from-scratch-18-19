@@ -73,8 +73,8 @@ Here are some snippets to see how the code actually works
 
 - [x] Using `map()` instead of `forEach()` to loop through template literals
 - [x] Using `promise` instead of `XMLHttpRequest`
-- [ ] Use a different route for a every search entry
-- [ ] Using Local storage to limit the amount of API requests needed
+- [x] Use a different route for a every search entry
+- [x] Using Local storage to limit the amount of API requests needed
 
 ---
 

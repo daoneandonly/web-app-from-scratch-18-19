@@ -20,7 +20,7 @@ main {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .card {
@@ -31,6 +31,17 @@ main {
   flex-wrap: wrap;
   justify-content: space-between;
   min-height: 33vw;
+}
+
+.smallCard {
+  margin: auto;
+  width: 15%;
+}
+
+.smallCard:hover img {
+  transform-origin: center;
+  transition: 0.15s ease-in-out all;
+  transform: scale(1.025);
 }
 
 .card:nth-of-type(4n + 0),
@@ -165,6 +176,26 @@ main .right {
   content: 'HP';
   font-size: 0.5em;
   margin-right: 0.5em;
+}
+
+.back {
+  width: 100%;
+}
+
+.back button {
+  font-family: 'Lato';
+  font-size: 1.2em;
+  width: 100%;
+  margin: auto;
+  border: none;
+  color: white;
+  background-color: rgba(56, 56, 56, 0.35);
+  line-height: 2em;
+  /* opacity: 0.5; */
+}
+
+.back button:hover {
+  background-color: rgba(56, 56, 56, 0.65);
 }
 
 /* SPRITES  */

@@ -3,6 +3,7 @@
 
   console.log('Hello Pokémon fan.')
 
+  const localStorage = window.localStorage
   const main = document.querySelector('main')
   const config = {
     defaultSet: 'sm9',
@@ -13,18 +14,17 @@
     }
   }
   const url = config.baseUrl + config.defaultSet
-  const input = document.querySelector('input')
 
   const utility = {
     capitalize: word => {
       return word.charAt(0).toUpperCase() + word.slice(1)
+    },
+    setStorage: data => {
+      localStorage.setItem('data', JSON.stringify(data))
+    },
+    getStorage: () => {
+      return api.parse(localStorage.getItem('data'))
     }
-    // multiFilter: (data, listOfFilters, filterWord) => {\
-    // 	let filteredObject = {}
-    //   listOfFilters.forEach(singleFilter => {
-    //     api.filter(data, singleFilter, filterWord)
-    //   })
-    // }
   }
   const api = {
     load: variableUrl => {
@@ -49,22 +49,44 @@
     parse: responseText => {
       return JSON.parse(responseText)
     },
-    filter: (data, b, filterWord) => {
+    filter: (data, key, filterWord) => {
       console.log(
         'Filtering for the word "' +
           filterWord +
           '" in the category "' +
-          b +
+          key +
           '"'
       )
       if (filterWord == '') {
         return data
       }
       let filterData = data.cards.filter(x => {
-        if (x[b] === undefined) {
+        if (x[key] === undefined) {
           return false
         }
-        if (x[b].toLowerCase().includes(filterWord.toLowerCase())) {
+        if (
+          x[key]
+            .toString()
+            .toLowerCase()
+            .includes(filterWord.toLowerCase())
+        ) {
+          return true
+        }
+      })
+      return { cards: filterData }
+    },
+    match: (data, key, matchWord) => {
+      console.log(
+        'Matched for the word "' + matchWord + '" in the category "' + key + '"'
+      )
+      if (matchWord == '') {
+        return data
+      }
+      let filterData = data.cards.filter(x => {
+        if (x[key] === undefined) {
+          return false
+        }
+        if (x[key] == matchWord) {
           return true
         }
       })
@@ -72,39 +94,17 @@
     }
   }
 
-  routie({
-    '': () => {
-      api.load(url).then(data => {
-        console.log('Routie on route "/" is triggered.')
-        render.allCards(data)
-      })
-    },
-    overview: () => {
-      api.load(url).then(data => {
-        console.log('Routie on route "overview" is triggered.')
-        render.allCards(data)
-      })
-    },
-    '/cards/:id': id => {
-      api.load(url).then(data => {
-        const currentCard = api.filter(data, 'id', id).cards
-        console.log(
-          'Showing single page for ' +
-            currentCard.length +
-            ' card with name "' +
-            currentCard[0].name +
-            '"'
-        )
-        main.innerHTML = render.singleCard(currentCard[0])
-      })
-    }
-  })
-
   const render = {
     allCards: data => {
       // function that renders the text of the card
       let listOfCards = data.cards.map(data => {
-        return render.singleCard(data)
+        return `
+        <section class="smallCard">
+          <a href="#/cards/${data.id}">
+						<img class='previewImage' src='${data.imageUrl}'/>
+					</a>
+        </section>
+        `
       })
       console.log('Rendered ' + listOfCards.length + ' cards')
       if (listOfCards.length == 0) {
@@ -119,6 +119,7 @@
       // create a string of html for the card
       let format = `
 			<section class="card">
+      <a href="#/overview" class='back'><button>← Back to list</button></a>
 				<section class='left half'>
 					<a href="#/cards/${data.id}">
 						<img class='previewImage' src='${data.imageUrlHiRes}'/>
@@ -186,8 +187,11 @@
     },
     refreshTitle: newSet => {
       const message = 'Now showing ' + newSet
-      input.placeholder = 'Search by name'
       document.title = 'PokémonTCG Webapp'
+    },
+    updateSearch: searchBy => {
+      const input = document.querySelector('.searchField')
+      input.placeholder = 'Search by ' + searchBy
     },
     checkEmpty: (renderValue, element) => {
       if (renderValue) {
@@ -197,16 +201,123 @@
     }
   }
 
+  const init = {
+    inputListen: () => {
+      // eventListener to any change on the input element
+      const input = document.querySelector('.searchField')
+      input.addEventListener('change', e => {
+        console.log('Heard a change on Input')
+        const inputValue = e.target.value
+        if (inputValue == '') {
+          window.location.hash = '/overview'
+          render.updateSearch('name')
+        }
+        if (inputValue != '') {
+          var radioStatus = document.querySelectorAll('input[type=radio]')
+          console.log(radioStatus)
+          if (radioStatus[0].checked) {
+            window.location.hash = '/search&name=' + inputValue
+          }
+          if (radioStatus[1].checked) {
+            window.location.hash = '/search&type=' + inputValue
+          }
+        }
+      })
+    },
+    radioListen: () => {
+      const radioList = document.querySelectorAll('input[type=radio]')
+      radioList.forEach(currentRadio => {
+        currentRadio.addEventListener('click', () => {
+          if (currentRadio.checked) {
+            render.updateSearch(currentRadio.value)
+          }
+        })
+      })
+    },
+    start: () => {
+      init.inputListen()
+      render.updateSearch('name')
+      init.radioListen()
+    }
+  }
+
+  routie({
+    '': () => {
+      api.load(url).then(data => {
+        console.log('Routie on route "/" is triggered.')
+        render.allCards(data)
+        utility.setStorage(data)
+      })
+    },
+    '/overview': () => {
+      const localData = utility.getStorage()
+      console.log('Routie on route "overview" is triggered.')
+      if (localData != '') {
+        console.log('Found local data for overview!')
+        render.allCards(localData)
+      }
+      if (localData == undefined) {
+        api.load(url).then(data => {
+          render.allCards(data)
+        })
+      }
+    },
+    '/cards/:id': id => {
+      const localData = utility.getStorage()
+      if (localData != '') {
+        console.log('Found local data for a single card!')
+        const currentCard = api.match(localData, 'id', id).cards
+        main.innerHTML = render.singleCard(currentCard[0])
+      }
+      if (localData == undefined) {
+        api.load(url).then(data => {
+          const currentCard = api.match(data, 'id', id).cards
+          console.log(
+            'Showing single page for ' +
+              currentCard.length +
+              ' card with name "' +
+              currentCard[0].name +
+              '"'
+          )
+          main.innerHTML = render.singleCard(currentCard[0])
+        })
+      }
+    },
+    '/search&name=:inputValue': inputValue => {
+      console.log('Searching for NAME: ' + inputValue)
+      const localData = utility.getStorage()
+      if (localData != '') {
+        console.log('Found local data for a search entree')
+        const newData = api.filter(localData, 'name', inputValue)
+        render.allCards(newData)
+      }
+      if (localData == undefined) {
+        api.load().then(data => {
+          const newData = api.filter(data, 'name', inputValue)
+          render.allCards(newData)
+        })
+      }
+    },
+    '/search&type=:inputValue': inputValue => {
+      console.log('Searching for TYPE: ' + inputValue)
+      const localData = utility.getStorage()
+      if (localData != '') {
+        console.log('Found local data for a search entree')
+        console.log(localData)
+        const newData = api.filter(localData, 'types', inputValue)
+        render.allCards(newData)
+      }
+      if (localData == undefined) {
+        api.load().then(data => {
+          console.log(data)
+          const newData = api.filter(data, 'types', inputValue)
+          render.allCards(newData)
+        })
+      }
+    }
+  })
   // update title
   render.refreshTitle(config.defaultSet)
 
-  // eventListener to any change on the input element
-  input.addEventListener('change', e => {
-    const inputValue = e.target.value
-    api.load(url).then(data => {
-      console.log('Heard a change on Input')
-      const newData = api.filter(data, 'name', inputValue)
-      render.allCards(newData)
-    })
-  })
+  init.start()
 })()
