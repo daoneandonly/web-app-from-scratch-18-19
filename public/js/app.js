@@ -6,8 +6,8 @@
   const localStorage = window.localStorage
   const main = document.querySelector('main')
   const config = {
-    defaultSet: 'sm9',
-    baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=170&setCode=',
+    defaultSet: 'sm7',
+    baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=200&setCode=',
     currentSet: setCode => {
       // check what set should be loaded
       return setCode ? setCode : config.defaultSet
