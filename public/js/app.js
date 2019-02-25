@@ -1,25 +1,9 @@
+import { config } from './modules/config.js'
+import { utility } from './modules/utility.js'
 ;(() => {
   'use strict'
 
   console.log('Hello Pokémon fan.')
-
-  const config = {
-    baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=250&setCode=',
-    defaultSet: 'sm7',
-    currentSet: setCode => {
-      // check what set should be loaded
-      return setCode ? setCode : config.defaultSet
-    },
-    url: () => {
-      return config.baseUrl + config.defaultSet
-    }
-  }
-
-  const utility = {
-    capitalize: word => {
-      return word.charAt(0).toUpperCase() + word.slice(1)
-    }
-  }
 
   const dataObject = {
     localStorage: () => {

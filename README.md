@@ -39,10 +39,10 @@ The app starts with the API request for the set `sm9` (which is Sun & Moon 9, th
 - [x] Changing requested set and cards through input field
 - [x] Adding search functionality through names
 - [x] Adding routing to go from set view to single card
+- [x] Adding search functionality through multiple fields (Name, text, type)
 
 ### Upcomming features
 
-- [ ] Adding search functionality through multiple fields (Name, attack, type)
 - [ ] Changing sets through a dropdown or overview
 - [ ] Searching through the entire database by name
 - [ ] Show other cards by the same name in the detail page
@@ -75,6 +75,7 @@ Here are some snippets to see how the code actually works
 - [x] Using `promise` instead of `XMLHttpRequest`
 - [x] Use a different route for a every search entry
 - [x] Using Local storage to limit the amount of API requests needed
+- [ ] Seperating object literals into different files using modules
 
 ---
 
