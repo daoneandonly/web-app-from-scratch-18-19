@@ -3,51 +3,33 @@
 
   console.log('Hello Pokémon fan.')
 
-  const localStorage = window.localStorage
-  const main = document.querySelector('main')
   const config = {
-    defaultSet: 'sm7',
     baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=250&setCode=',
+    defaultSet: 'sm7',
     currentSet: setCode => {
       // check what set should be loaded
       return setCode ? setCode : config.defaultSet
+    },
+    url: () => {
+      return config.baseUrl + config.defaultSet
     }
   }
-  const url = config.baseUrl + config.defaultSet
 
   const utility = {
     capitalize: word => {
       return word.charAt(0).toUpperCase() + word.slice(1)
-    },
-    setStorage: data => {
-      localStorage.setItem('data', JSON.stringify(data))
-    },
-    getStorage: () => {
-      return api.parse(localStorage.getItem('data'))
     }
   }
-  const api = {
-    load: variableUrl => {
-      return new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest()
-        console.log('Requesting data from API')
-        request.open('GET', variableUrl, true)
-        request.addEventListener('load', () => {
-          if (request.status == 200) {
-            const data = api.parse(request.responseText)
-            console.log('API returned ' + data.cards.length + ' cards')
-            resolve(data)
-          }
-          if (request.status >= 400) {
-            reject(error)
-            console.log('Something went wrong!')
-          }
-        })
-        request.send()
-      })
+
+  const dataObject = {
+    localStorage: () => {
+      return window.localStorage
     },
-    parse: responseText => {
-      return JSON.parse(responseText)
+    setStorage: data => {
+      this.localStorage.setItem('data', JSON.stringify(data))
+    },
+    getStorage: () => {
+      return api.parse(this.localStorage.getItem('data'))
     },
     filter: (data, key, filterWord) => {
       console.log(
@@ -94,7 +76,43 @@
     }
   }
 
+  const api = {
+    get: variableUrl => {
+      if (dataObject.localStorage != '') {
+        console.log('Found local data')
+        return new Promise((resolve, reject) => {
+          resolve(dataObject.getStorage())
+        })
+      } else {
+        return this.load(variableUrl)
+      }
+    },
+    load: variableUrl => {
+      return new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest()
+        console.log('Requesting data from API')
+        request.open('GET', variableUrl, true)
+        request.addEventListener('load', () => {
+          if (request.status == 200) {
+            const data = api.parse(request.responseText)
+            console.log('API returned ' + data.cards.length + ' cards')
+            resolve(data)
+          }
+          if (request.status >= 400) {
+            reject(error)
+            console.log('Something went wrong!')
+          }
+        })
+        request.send()
+      })
+    },
+    parse: responseText => {
+      return JSON.parse(responseText)
+    }
+  }
+
   const render = {
+    main: document.querySelector('main'),
     allCards: data => {
       // function that renders the text of the card
       let listOfCards = data.cards.map(data => {
@@ -108,10 +126,10 @@
       })
       console.log('Rendered ' + listOfCards.length + ' cards')
       if (listOfCards.length == 0) {
-        main.innerHTML = '<h1>No cards found :( </h1>'
+        render.main.innerHTML = '<h1>No cards found :( </h1>'
       }
       if (listOfCards.length > 0) {
-        main.innerHTML = listOfCards.join('')
+        render.main.innerHTML = listOfCards.join('')
       }
     },
     singleCard: data => {
@@ -216,163 +234,108 @@
     }
   }
 
-  const init = {
+  const search = {
+    textInput: document.querySelector('.searchField'),
+    radioList: document.querySelectorAll('input[type=radio]'),
     inputListen: () => {
       // eventListener to any change on the input element
-      const input = document.querySelector('.searchField')
-      input.addEventListener('keyup', () => {
+      search.textInput.addEventListener('keyup', () => {
         console.log('Heard a change on Input')
-        init.searchExecute()
+        search.execute()
       })
     },
     radioListen: () => {
-      const radioList = document.querySelectorAll('input[type=radio]')
-      radioList.forEach(currentRadio => {
+      search.radioList.forEach(currentRadio => {
         currentRadio.addEventListener('click', e => {
           console.log('Heard a change on radio')
           if (currentRadio.checked) {
-            const input = document.querySelector('.searchField')
             render.updateSearch(currentRadio.value)
-            init.searchExecute(e)
-            input.focus()
+            search.execute(e)
+            search.textInput.focus()
           }
         })
       })
     },
-    searchExecute: () => {
-      const input = document.querySelector('.searchField')
-      const inputValue = input.value
+    execute: () => {
+      const inputValue = search.textInput.value
       if (inputValue == '' || inputValue.length < 2) {
         window.location.hash = '/overview'
       }
       if (inputValue.length > 1) {
-        var radioStatus = document.querySelectorAll('input[type=radio]')
-        for (let i = 0; i < radioStatus.length; i++) {
-          if (radioStatus[i].checked) {
+        for (let i = 0; i < search.radioList.length; i++) {
+          if (search.radioList[i].checked) {
             window.location.hash =
-              '/search&' + radioStatus[i].value + '=' + inputValue
+              '/search&' + search.radioList[i].value + '=' + inputValue
           }
         }
       }
-    },
+    }
+  }
+
+  const app = {
     start: () => {
-      init.inputListen()
-      init.radioListen()
+      search.inputListen()
+      search.radioListen()
       render.updateSearch('name')
     }
   }
 
   routie({
     '': () => {
-      api.load(url).then(data => {
+      api.load(config.url()).then(data => {
         console.log('Routie on route "/" is triggered.')
         render.allCards(data)
         render.refreshTitle(data)
-        utility.setStorage(data)
+        dataObject.setStorage(data)
       })
     },
     '/overview': () => {
-      const localData = utility.getStorage()
-      console.log('Routie on route "overview" is triggered.')
-      render.refreshTitle(localData)
-      if (localData != '') {
-        console.log('Found local data for overview!')
-        render.allCards(localData)
-      }
-      if (localData == undefined) {
-        api.load(url).then(data => {
-          render.allCards(data)
-        })
-      }
+      api.get(config.url()).then(data => {
+        render.allCards(data)
+      })
     },
     '/cards/:id': id => {
-      const localData = utility.getStorage()
-      if (localData != '') {
-        console.log('Found local data for a single card!')
-        const currentCard = api.match(localData, 'id', id).cards
-        main.innerHTML = render.singleCard(currentCard[0])
-      }
-      if (localData == undefined) {
-        api.load(url).then(data => {
-          const currentCard = api.match(data, 'id', id).cards
-          console.log(
-            'Showing single page for ' +
-              currentCard.length +
-              ' card with name "' +
-              currentCard[0].name +
-              '"'
-          )
-          main.innerHTML = render.singleCard(currentCard[0])
-        })
-      }
+      api.get(config.url()).then(data => {
+        const currentCard = dataObject.match(data, 'id', id).cards
+        console.log(
+          'Showing single page for ' +
+            currentCard.length +
+            ' card with name "' +
+            currentCard[0].name +
+            '"'
+        )
+        render.main.innerHTML = render.singleCard(currentCard[0])
+      })
     },
     '/search&name=:inputValue': inputValue => {
       console.log('Searching for NAME: ' + inputValue)
-      const localData = utility.getStorage()
-      if (localData != '') {
-        console.log('Found local data for a search entree')
-        const newData = api.filter(localData, 'name', inputValue)
+      api.get(config.url()).then(data => {
+        const newData = dataObject.filter(data, 'name', inputValue)
         render.allCards(newData)
-      }
-      if (localData == undefined) {
-        api.load().then(data => {
-          const newData = api.filter(data, 'name', inputValue)
-          render.allCards(newData)
-        })
-      }
+      })
     },
     '/search&type=:inputValue': inputValue => {
       console.log('Searching for TYPE: ' + inputValue)
-      const localData = utility.getStorage()
-      if (localData != '') {
-        console.log('Found local data for a search entree')
-        console.log(localData)
-        const newData = api.filter(localData, 'types', inputValue)
+      api.get(config.url()).then(data => {
+        const newData = dataObject.filter(data, 'types', inputValue)
         render.allCards(newData)
-      }
-      if (localData == undefined) {
-        api.load().then(data => {
-          console.log(data)
-          const newData = api.filter(data, 'types', inputValue)
-          render.allCards(newData)
-        })
-      }
+      })
     },
     '/search&rarity=:inputValue': inputValue => {
       console.log('Searching for RARITY: ' + inputValue)
-      const localData = utility.getStorage()
-      if (localData != '') {
-        console.log('Found local data for a search entree')
-        console.log(localData)
-        const newData = api.filter(localData, 'rarity', inputValue)
+      api.get(config.url()).then(data => {
+        const newData = dataObject.filter(data, 'rarity', inputValue)
         render.allCards(newData)
-      }
-      if (localData == undefined) {
-        api.load().then(data => {
-          console.log(data)
-          const newData = api.filter(data, 'rarity', inputValue)
-          render.allCards(newData)
-        })
-      }
+      })
     },
     '/search&text=:inputValue': inputValue => {
       console.log('Searching for CARDTEXT: ' + inputValue)
-      const localData = utility.getStorage()
-      if (localData != '') {
-        console.log('Found local data for a search entree')
-        console.log(localData)
-        const newData = api.filter(localData, 'text', inputValue)
+      api.get(config.url()).then(data => {
+        const newData = dataObject.filter(data, 'text', inputValue)
         render.allCards(newData)
-      }
-      if (localData == undefined) {
-        api.load().then(data => {
-          console.log(data)
-          const newData = api.filter(data, 'text', inputValue)
-          render.allCards(newData)
-        })
-      }
+      })
     }
   })
 
-  init.start()
+  app.start()
 })()
