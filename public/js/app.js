@@ -7,7 +7,7 @@
   const main = document.querySelector('main')
   const config = {
     defaultSet: 'sm7',
-    baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=200&setCode=',
+    baseUrl: 'https://api.pokemontcg.io/v1/cards?pageSize=250&setCode=',
     currentSet: setCode => {
       // check what set should be loaded
       return setCode ? setCode : config.defaultSet
@@ -121,8 +121,8 @@
 			<section class="card">
       <a href="#/overview" class='back'><button>← Back to list</button></a>
 				<section class='left half'>
-					<a href="#/cards/${data.id}">
-						<img class='previewImage' src='${data.imageUrlHiRes}'/>
+					<a href="${data.imageUrlHiRes}" target="_blank">
+						<img class='largeImage' src='${data.imageUrlHiRes}'/>
 					</a>
 					</section>
 
@@ -185,9 +185,17 @@
       }
       return listOfAttacks
     },
-    refreshTitle: newSet => {
-      const message = 'Now showing ' + newSet
-      document.title = 'PokémonTCG Webapp'
+    refreshTitle: data => {
+      const header = document.querySelector('h1')
+      const titleMessage =
+        data.cards[0].series +
+        ' ' +
+        data.cards[0].set +
+        ' (' +
+        data.cards.length +
+        ' cards)'
+      document.title = 'PokémonTCG Webapp: ' + titleMessage
+      header.innerHTML = titleMessage
     },
     updateSearch: searchBy => {
       const input = document.querySelector('.searchField')
@@ -198,6 +206,13 @@
         return `<${element}>${renderValue}</${element}>`
       }
       return ''
+    },
+    searchLabel: searchName => {
+      return `
+        <section class='searchLabel ${searchName}'>
+          <p>${searchName}</p>
+        </section>
+      `
     }
   }
 
@@ -205,42 +220,45 @@
     inputListen: () => {
       // eventListener to any change on the input element
       const input = document.querySelector('.searchField')
-      input.addEventListener('change', e => {
+      input.addEventListener('keyup', () => {
         console.log('Heard a change on Input')
-        const inputValue = e.target.value
-        if (inputValue == '') {
-          window.location.hash = '/overview'
-          render.updateSearch('name')
-        }
-        if (inputValue != '') {
-          var radioStatus = document.querySelectorAll('input[type=radio]')
-          console.log(radioStatus)
-          if (radioStatus[0].checked) {
-            window.location.hash = '/search&name=' + inputValue
-          }
-          if (radioStatus[1].checked) {
-            window.location.hash = '/search&type=' + inputValue
-          }
-          if (radioStatus[2].checked) {
-            window.location.hash = '/search&rarity=' + inputValue
-          }
-        }
+        init.searchExecute()
       })
     },
     radioListen: () => {
       const radioList = document.querySelectorAll('input[type=radio]')
       radioList.forEach(currentRadio => {
-        currentRadio.addEventListener('click', () => {
+        currentRadio.addEventListener('click', e => {
+          console.log('Heard a change on radio')
           if (currentRadio.checked) {
+            const input = document.querySelector('.searchField')
             render.updateSearch(currentRadio.value)
+            init.searchExecute(e)
+            input.focus()
           }
         })
       })
     },
+    searchExecute: () => {
+      const input = document.querySelector('.searchField')
+      const inputValue = input.value
+      if (inputValue == '' || inputValue.length < 2) {
+        window.location.hash = '/overview'
+      }
+      if (inputValue.length > 1) {
+        var radioStatus = document.querySelectorAll('input[type=radio]')
+        for (let i = 0; i < radioStatus.length; i++) {
+          if (radioStatus[i].checked) {
+            window.location.hash =
+              '/search&' + radioStatus[i].value + '=' + inputValue
+          }
+        }
+      }
+    },
     start: () => {
       init.inputListen()
-      render.updateSearch('name')
       init.radioListen()
+      render.updateSearch('name')
     }
   }
 
@@ -249,12 +267,14 @@
       api.load(url).then(data => {
         console.log('Routie on route "/" is triggered.')
         render.allCards(data)
+        render.refreshTitle(data)
         utility.setStorage(data)
       })
     },
     '/overview': () => {
       const localData = utility.getStorage()
       console.log('Routie on route "overview" is triggered.')
+      render.refreshTitle(localData)
       if (localData != '') {
         console.log('Found local data for overview!')
         render.allCards(localData)
@@ -334,10 +354,25 @@
           render.allCards(newData)
         })
       }
+    },
+    '/search&text=:inputValue': inputValue => {
+      console.log('Searching for CARDTEXT: ' + inputValue)
+      const localData = utility.getStorage()
+      if (localData != '') {
+        console.log('Found local data for a search entree')
+        console.log(localData)
+        const newData = api.filter(localData, 'text', inputValue)
+        render.allCards(newData)
+      }
+      if (localData == undefined) {
+        api.load().then(data => {
+          console.log(data)
+          const newData = api.filter(data, 'text', inputValue)
+          render.allCards(newData)
+        })
+      }
     }
   })
-  // update title
-  render.refreshTitle(config.defaultSet)
 
   init.start()
 })()

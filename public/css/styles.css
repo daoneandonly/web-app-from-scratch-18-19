@@ -10,6 +10,7 @@ body {
   font-family: 'Lato';
   color: #383838;
   background-color: rgba(56, 56, 56, 0.01);
+  margin-bottom: 5em;
 }
 
 h1 {
@@ -35,7 +36,8 @@ main {
 
 .smallCard {
   margin: auto;
-  width: 15%;
+  max-width: 15%;
+  min-width: 15em;
 }
 
 .smallCard:hover img {
@@ -131,10 +133,14 @@ main .left img {
   height: 95%;
   max-height: 80vh;
   transform-origin: center;
-  transition: 0.15s linear all;
+  transition: 0.15s ease-in-out all;
 }
 
-main .card:hover img {
+main .smallCard .previewImage {
+  transition: 0.05s ease-in-out all;
+}
+
+main .smallCard:hover .previewImage {
   transform-origin: center;
   transition: 0.15s ease-in-out all;
   transform: scale(1.025);
@@ -282,7 +288,7 @@ main .right {
   }
 
   .card {
-    width: 50%;
+    width: 70%;
     min-height: 33vw;
   }
 }
