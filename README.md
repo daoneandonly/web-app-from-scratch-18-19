@@ -55,11 +55,11 @@ The app starts with the API request for the set `sm9` (which is Sun & Moon 9, th
 
 The following diagram shows the workings of my application in a simplified manner. It shows how different parts of code interact with each other.
 
-![Actor Diagram](img/actor_diagramv2.png)
+![Actor Diagram](img/actor_diagramv3.png)
 
-### Flow Diagram
+### Interaction Diagram
 
-`Pending image`
+![Interaction Diagram](img/interaction_diagramv1.png)
 
 ### Code snippets
 
