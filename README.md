@@ -25,7 +25,7 @@ This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.
 
 ## Live demo
 
-[You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/public/index.html)
+[You can find the Live Demo here.](https://daoneandonly.github.io/web-app-from-scratch-18-19/index.html)
 
 ## Features
 
@@ -55,7 +55,7 @@ The app starts with the API request for the set `sm9` (which is Sun & Moon 9, th
 
 The following diagram shows the workings of my application in a simplified manner. It shows how different parts of code interact with each other.
 
-![Actor Diagram](img/actor-diagram.png)
+![Actor Diagram](img/actor_diagramv2.png)
 
 ### Flow Diagram
 
