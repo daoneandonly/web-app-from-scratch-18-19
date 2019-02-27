@@ -1,5 +1,14 @@
 import { config } from './modules/config.js'
 import { utility } from './modules/utility.js'
+// import { dataObject } from './modules/dataObject.js'
+// import { api } from './modules/api.js'
+// import { render } from './modules/render.js'
+// import { search } from './modules/search.js'
+// import { router } from './modules/routie.js'
+// console.log(api)
+// console.log(router)
+
+// router.routie()
 ;(() => {
   'use strict'
 
@@ -103,14 +112,16 @@ import { utility } from './modules/utility.js'
         return `
         <section class="smallCard">
           <a href="#/cards/${data.id}">
-						<img class='previewImage' src='${data.imageUrl}'/>
-					</a>
+  					<img class='previewImage' src='${data.imageUrl}'/>
+  				</a>
         </section>
         `
       })
       console.log('Rendered ' + listOfCards.length + ' cards')
       if (listOfCards.length == 0) {
-        render.main.innerHTML = '<h1>No cards found :( </h1>'
+        render.main.innerHTML = `
+        <h1>No cards found :(</h1>
+          <a href="#/overview" class='back'><button>← Back to list</button></a>`
       }
       if (listOfCards.length > 0) {
         render.main.innerHTML = listOfCards.join('')
@@ -120,37 +131,37 @@ import { utility } from './modules/utility.js'
       // function that handles individual cards
       // create a string of html for the card
       let format = `
-			<section class="card">
+  		<section class="card">
       <a href="#/overview" class='back'><button>← Back to list</button></a>
-				<section class='left half'>
-					<a href="${data.imageUrlHiRes}" target="_blank">
-						<img class='largeImage' src='${data.imageUrlHiRes}'/>
-					</a>
-					</section>
+  			<section class='left half'>
+  				<a href="${data.imageUrlHiRes}" target="_blank">
+  					<img class='largeImage' src='${data.imageUrlHiRes}'/>
+  				</a>
+  				</section>
 
-					<section class='right half'>
+  				<section class='right half'>
 
-					<section class='cardDetails'>
-						<h3>${data.name}</h3>
-						<section class='detailsHp'>
-							${render.checkEmpty(data.hp, 'h3')}
-							${render.checkEmpty(render.costToImage(data.types), 'p')}
-						</section>
-						<p>${data.subtype}</p>
-					</section>
+  				<section class='cardDetails'>
+  					<h3>${data.name}</h3>
+  					<section class='detailsHp'>
+  						${render.checkEmpty(data.hp, 'h3')}
+  						${render.checkEmpty(render.costToImage(data.types), 'p')}
+  					</section>
+  					<p>${data.subtype}</p>
+  				</section>
 
-					<section class='cardAttacks'>
-						${render.renderAttacks(data.attacks)}
-						${render.checkEmpty(data.text, 'p')}
-					</section>
+  				<section class='cardAttacks'>
+  					${render.renderAttacks(data.attacks)}
+  					${render.checkEmpty(data.text, 'p')}
+  				</section>
 
-					<section class="cardArtist">
-						<h3>Artist:</h3>
-						<p>${data.artist}</p>
-					</section>
-				</section>
-			</section>
-			`
+  				<section class="cardArtist">
+  					<h3>Artist:</h3>
+  					<p>${data.artist}</p>
+  				</section>
+  			</section>
+  		</section>
+  		`
       // insert format within main element
       return format
     },
@@ -170,19 +181,19 @@ import { utility } from './modules/utility.js'
       if (attacks) {
         attacks.forEach(attack => {
           listOfAttacks += `<section class='singleAttack'>
-							<section class="attackCost">
-								${render.costToImage(attack.cost)}
-							</section>
-							<section class='attackName'>
-								<h3>${attack.name}</h3>
-							</section>
-							<section class='attackDamage'>
-								${render.checkEmpty(attack.damage, 'h3')}
-							</section>
-							<section class="attackDescription">
-								<p>${attack.text}</p>
-							</section>
-						</section>`
+  						<section class="attackCost">
+  							${render.costToImage(attack.cost)}
+  						</section>
+  						<section class='attackName'>
+  							<h3>${attack.name}</h3>
+  						</section>
+  						<section class='attackDamage'>
+  							${render.checkEmpty(attack.damage, 'h3')}
+  						</section>
+  						<section class="attackDescription">
+  							<p>${attack.text}</p>
+  						</section>
+  					</section>`
         })
       }
       return listOfAttacks
@@ -276,6 +287,7 @@ import { utility } from './modules/utility.js'
     '/overview': () => {
       api.get(config.url()).then(data => {
         render.allCards(data)
+        search.textInput.value = ''
       })
     },
     '/cards/:id': id => {
@@ -320,6 +332,7 @@ import { utility } from './modules/utility.js'
       })
     }
   })
+  // router.routie()
 
   app.start()
 })()
