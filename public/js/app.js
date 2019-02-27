@@ -21,6 +21,16 @@ import { utility } from './modules/utility.js'
     setStorage: data => {
       dataObject.localStorage().setItem('data', JSON.stringify(data))
     },
+    getData: variableUrl => {
+      if (dataObject.localStorage() != '') {
+        console.log('Found local data')
+        return new Promise((resolve, reject) => {
+          resolve(dataObject.getStorage())
+        })
+      } else {
+        return api.load(variableUrl)
+      }
+    },
     getStorage: () => {
       return api.parse(dataObject.localStorage().getItem('data'))
     },
@@ -70,16 +80,6 @@ import { utility } from './modules/utility.js'
   }
 
   const api = {
-    get: variableUrl => {
-      if (dataObject.localStorage() != '') {
-        console.log('Found local data')
-        return new Promise((resolve, reject) => {
-          resolve(dataObject.getStorage())
-        })
-      } else {
-        return this.load(variableUrl)
-      }
-    },
     load: variableUrl => {
       return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest()
@@ -285,13 +285,13 @@ import { utility } from './modules/utility.js'
       })
     },
     '/overview': () => {
-      api.get(config.url()).then(data => {
+      dataObject.getData(config.url()).then(data => {
         render.allCards(data)
         search.textInput.value = ''
       })
     },
     '/cards/:id': id => {
-      api.get(config.url()).then(data => {
+      dataObject.getData(config.url()).then(data => {
         const currentCard = dataObject.matchData(data, 'id', id).cards
         console.log(
           'Showing single page for ' +
@@ -305,28 +305,28 @@ import { utility } from './modules/utility.js'
     },
     '/search&name=:inputValue': inputValue => {
       console.log('Searching for NAME: ' + inputValue)
-      api.get(config.url()).then(data => {
+      dataObject.getData(config.url()).then(data => {
         const newData = dataObject.filterData(data, 'name', inputValue)
         render.allCards(newData)
       })
     },
     '/search&type=:inputValue': inputValue => {
       console.log('Searching for TYPE: ' + inputValue)
-      api.get(config.url()).then(data => {
+      dataObject.getData(config.url()).then(data => {
         const newData = dataObject.filterData(data, 'types', inputValue)
         render.allCards(newData)
       })
     },
     '/search&rarity=:inputValue': inputValue => {
       console.log('Searching for RARITY: ' + inputValue)
-      api.get(config.url()).then(data => {
+      dataObject.getData(config.url()).then(data => {
         const newData = dataObject.filterData(data, 'rarity', inputValue)
         render.allCards(newData)
       })
     },
     '/search&text=:inputValue': inputValue => {
       console.log('Searching for CARDTEXT: ' + inputValue)
-      api.get(config.url()).then(data => {
+      dataObject.getData(config.url()).then(data => {
         const newData = dataObject.filterData(data, 'text', inputValue)
         render.allCards(newData)
       })
