@@ -2,7 +2,7 @@
 
 This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML. It gives you the ability to search through the entire Pokémon TCG Database. Currently it shows you the set Sun and Moon Celestial Storm.
 
-![Preview](/img/week3capture.png)
+![Preview](/img/week3capture1.png)
 
 ---
 
