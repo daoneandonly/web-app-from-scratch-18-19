@@ -1,8 +1,8 @@
 # Web app with Pokémon TCG api
 
-This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML. It gives you the ability to search through the entire Pokémon TCG Database. Currently it shows you the latest set: Sun and Moon
+This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML. It gives you the ability to search through the entire Pokémon TCG Database. Currently it shows you the set Sun and Moon Celestial Storm.
 
-![Preview](/img/week2capture1.png)
+![Preview](/img/week3capture.png)
 
 ---
 
@@ -31,17 +31,25 @@ This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.
 
 ### Searching
 
-The app starts with the API request for the set `sm9` (which is Sun & Moon 9, the most recent released set). With the input field you can search within that set for individual cards by name.
+The app starts with the API request for the set `sm7`. With the input field you can search within that set for individual cards by name.
 
-### Current features
+### Search features
 
-- [x] Search functionality through looks through names
+- [x] Search functionality that through looks through names
 - [x] Search/individual cards takes you to a new page
 - [x] Search functionality through multiple fields (Name, text, type)
+- [x] Search executes whenever the user change search category
+- [x] Search executes whenever the string `> 2`
+- [x] Search defaults to `#/overview` when there is no text or `< 3` characters
+
+### Known Bugs
+
+- Whenever you search for `common` as a rarity it also includes the `uncommon`
+- 'All Card Text' currently only works on Trainer cards
 
 ### Upcomming features
 
-- [ ] Changing sets through a dropdown or overview
+- [ ] Changing sets through a dropdown or overviewpage
 - [ ] Searching through the entire database by name
 - [ ] Show other cards by the same name in the detail page
 
@@ -51,13 +59,17 @@ The app starts with the API request for the set `sm9` (which is Sun & Moon 9, th
 
 ### Actor Diagram
 
-The following diagram shows the workings of my application in a simplified manner. It shows how different parts of code interact with each other.
+The following diagram shows the workings of my application in a simplified manner. It shows how different parts of code interact with each other. My code is entirely constructed out of object literals; Objects which contains different functions. These objects are sorted by their functionality.
 
 ![Actor Diagram](img/actor_diagramv3.png)
 
 ### Interaction Diagram
 
-![Interaction Diagram](img/interaction_diagramv2.png)
+This diagram shows how the code is constructed whenever a user interacts with it. A pageload on root triggers a couple of eventlisteners (`radioListen()` and `inputLIsten()`). It also stores the data that returned from the API call as localStorage. Any further pageload on either `#/overview` or `#details` will check if there is any localStorage and use that instead of an new API request.
+
+A search will filter over the currently loaded set through `filterData()`.
+
+![Interaction Diagram](img/interaction_diagramv3.png)
 
 ### Code snippets
 
@@ -67,7 +79,7 @@ Here are some snippets to see how the code actually works
 - [How attacks gets rendered](docs/code-examples.md#attacks)
 - [How cost of an attack gets rendered](docs/code-examples.md#Cost-to-Image)
 
-### Planned refactors
+### Refactors
 
 - [x] Using `map()` instead of `forEach()` to loop through template literals
 - [x] Using `promise` instead of `XMLHttpRequest`
@@ -77,7 +89,7 @@ Here are some snippets to see how the code actually works
 
 ---
 
-## Progression
+## Personal Progression
 
 ### Best practices
 
