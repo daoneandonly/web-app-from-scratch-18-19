@@ -1,6 +1,6 @@
 # Web app with Pokémon TCG api
 
-This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML. It gives you the ability to search through the entire Pokémon TCG Database and
+This is a webapp that uses the [Pokémon TCG developers API](https://pokemontcg.io/) to load in all info about a Pokémon Trading Card and show its content HTML. It gives you the ability to search through the entire Pokémon TCG Database. Currently it shows you the latest set: Sun and Moon
 
 ![Preview](/img/week2capture1.png)
 
@@ -35,11 +35,9 @@ The app starts with the API request for the set `sm9` (which is Sun & Moon 9, th
 
 ### Current features
 
-- [x] Requesting a set instead of a single cards
-- [x] Changing requested set and cards through input field
-- [x] Adding search functionality through names
-- [x] Adding routing to go from set view to single card
-- [x] Adding search functionality through multiple fields (Name, text, type)
+- [x] Search functionality through looks through names
+- [x] Search/individual cards takes you to a new page
+- [x] Search functionality through multiple fields (Name, text, type)
 
 ### Upcomming features
 
@@ -59,7 +57,7 @@ The following diagram shows the workings of my application in a simplified manne
 
 ### Interaction Diagram
 
-![Interaction Diagram](img/interaction_diagramv1.png)
+![Interaction Diagram](img/interaction_diagramv2.png)
 
 ### Code snippets
 
