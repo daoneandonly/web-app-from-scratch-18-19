@@ -44,8 +44,9 @@ The app starts with the API request for the set `sm7`. With the input field you 
 
 ### Known Bugs
 
-- Whenever you search for `common` as a rarity it also includes the `uncommon`
+- Whenever you search for `common` as a rarity it also includes `uncommon` cards
 - 'All Card Text' currently only works on Trainer cards
+- Abilities don't render as text in a single card page
 
 ### Upcomming features
 
