@@ -1,12 +1,5 @@
 import { config } from './modules/config.js'
 import { utility } from './modules/utility.js'
-// import { dataObject } from './modules/dataObject.js'
-// import { api } from './modules/api.js'
-// import { render } from './modules/render.js'
-// import { search } from './modules/search.js'
-// import { router } from './modules/routie.js'
-// console.log(api)
-// console.log(router)
 
 // router.routie()
 ;(() => {

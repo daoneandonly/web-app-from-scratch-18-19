@@ -3,7 +3,6 @@
 * {
   box-sizing: border-box;
   /* border: 1px solid red; */
-  /* margin: 0; */
 }
 
 body {
@@ -38,6 +37,7 @@ main {
   margin: auto;
   max-width: 15%;
   min-width: 15em;
+  width: 50%;
 }
 
 .smallCard:hover img {
@@ -307,7 +307,7 @@ main .right {
   }
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 500px) {
   .half {
     width: 40%;
   }
