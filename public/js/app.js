@@ -39,17 +39,41 @@ import { utility } from './modules/utility.js'
         return data
       }
       let filterData = data.cards.filter(x => {
+
+        function checkFilter (key, path) {
+          if (
+            path[key]
+              .toString()
+              .toLowerCase()
+              .includes(filterWord.toLowerCase())
+        ) {
+            return true
+          }
+        }
+
+        if (key === 'text') {
+          return checkFilter('name', x)
+        }
+
+        if (key === 'text' && x.ability) {
+          if (checkFilter('text', x.ability) || checkFilter('name', x.ability)) {
+            return true
+          }
+        }
+
+        if (key === 'text' && x.attacks) {
+          for (let i = 0; i < x.attacks.length; i++) {
+            if (checkFilter('text', x.attacks[i]) || checkFilter('name', x.attacks[i])) {
+              return true
+            }
+          }
+        }
+        
         if (x[key] === undefined) {
           return false
         }
-        if (
-          x[key]
-            .toString()
-            .toLowerCase()
-            .includes(filterWord.toLowerCase())
-        ) {
-          return true
-        }
+
+        return checkFilter(key, x)        
       })
       return { cards: filterData }
     },
@@ -135,7 +159,7 @@ import { utility } from './modules/utility.js'
 
   				<section class='cardDetails'>
   					<h3>${data.name}</h3>
-  					<section class='detailsHp'>
+            <section class='detailsHp'>
               ${render.checkEmpty(data.hp, 'h3')}
   						${render.checkEmpty(render.costToImage(data.types), 'p')}
   					</section>
@@ -143,6 +167,11 @@ import { utility } from './modules/utility.js'
   				</section>
 
   				<section class='cardAttacks'>
+            ${data.ability ? `
+              <h3 class="ability">${data.ability.name}</h3>
+              <p>${data.ability.text}</p>`
+               : null
+            }
   					${render.renderAttacks(data.attacks)}
             ${render.checkEmpty(data.text, 'p')}
   				</section>
@@ -273,14 +302,13 @@ import { utility } from './modules/utility.js'
           dataObject.getData(config.url()).then(data => {
             console.log('Routie on route "/" is triggered.')
             render.allCards(data)
-            render.refreshTitle(data)
             dataObject.setStorage(data)
           })
         },
         '/overview': () => {
           dataObject.getData(config.url()).then(data => {
             render.allCards(data)
-            // search.textInput.value = ''
+            render.refreshTitle(data)
           })
         },
         '/cards/:id': id => {

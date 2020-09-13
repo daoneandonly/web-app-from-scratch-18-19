@@ -70,6 +70,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  padding: 16px 0;
 }
 
 .singleAttack > .attackDescription {
@@ -176,9 +177,16 @@ main .smallCard:hover .previewImage {
 }
 
 .right {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+}
+
+.ability {
+  color: darkred;
+  font-weight: 900;
 }
 
 .cardDetails,
@@ -199,9 +207,6 @@ main .smallCard:hover .previewImage {
   margin-right: 0.5em;
 }
 
-.singleAttack {
-  padding: 16px 0;
-}
 
 .back {
   width: 100%;
