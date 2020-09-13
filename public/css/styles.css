@@ -3,7 +3,6 @@
 * {
   margin: 0;
   padding: 0;
-  /* border: 1px solid red; */
 }
 
 body {
@@ -64,6 +63,10 @@ main {
   background-color: rgba(56, 56, 56, 0.05);
 }
 
+.cardAttacks {
+  height: 75%;
+}
+
 .singleAttack {
   margin-top: 1em;
   border-top: 0.1em solid rgba(56, 56, 56, 0.35);
@@ -73,7 +76,8 @@ main {
   padding: 16px 0;
 }
 
-.singleAttack > .attackDescription {
+.singleAttack .attackDescription {
+  margin: 16px 0;
   width: 100%;
 }
 
@@ -232,6 +236,27 @@ main .smallCard:hover .previewImage {
   background-color: rgba(56, 56, 56, 0.65);
 }
 
+.cardFooter {
+  color: rgba(56, 56, 56, 0.6);
+  font-stretch: extra-condensed;
+  justify-self: flex-end;
+  font-size: 0.9rem;
+}
+
+.cardFooter > *,
+.cardArtist > * {
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.setImage {
+  width: 25px;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  transform: translateY(5px);
+}
+
 /* SPRITES  */
 .energy {
   background-image: url('https://pokemontcg.io/static/media/energy-types.f0fdba3b.png');
@@ -299,26 +324,7 @@ main .smallCard:hover .previewImage {
   font-stretch: ultra-expanded;
 }
 
-.cardFooter {
-  color: rgba(56, 56, 56, 0.6);
-  font-stretch: extra-condensed;
-  justify-self: flex-end;
-  font-size: 0.9rem;
-}
-
-.cardFooter > *,
-.cardArtist > * {
-  font-size: 0.9rem;
-  display: inline-block;
-}
-
-.setImage {
-  width: 25px;
-  padding: 0;
-  margin: 0;
-  display: inline-block;
-  transform: translateY(5px);
-}
+/* Loader styles  */
 
 .lds-dual-ring {
   margin-top: 10em;
@@ -337,6 +343,9 @@ main .smallCard:hover .previewImage {
   border-color: rgba(56, 56, 56, 1) transparent rgba(56, 56, 56, 1) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
+
+/* Loader keyframe */
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);

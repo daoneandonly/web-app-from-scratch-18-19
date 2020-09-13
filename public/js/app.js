@@ -16,7 +16,6 @@ import { utility } from './modules/utility.js'
     },
     getData: variableUrl => {
       if (dataObject.localStorage().getItem(config.currentSet())) {
-        console.log(`Found local data of set ${config.currentSet()}`)
         return new Promise((resolve, reject) => {
           resolve(dataObject.getStorage())
         })
@@ -28,13 +27,6 @@ import { utility } from './modules/utility.js'
       return api.parse(dataObject.localStorage().getItem(config.currentSet()))
     },
     filterData: (data, key, filterWord) => {
-      console.log(
-        'Filtering for the word "' +
-          filterWord +
-          '" in the category "' +
-          key +
-          '"'
-      )
       if (filterWord == '') {
         return data
       }
@@ -78,9 +70,6 @@ import { utility } from './modules/utility.js'
       return { cards: filterData }
     },
     matchData: (data, key, matchWord) => {
-      console.log(
-        'Matched for the word "' + matchWord + '" in the category "' + key + '"'
-      )
       if (matchWord == '') {
         return data
       }
@@ -100,19 +89,16 @@ import { utility } from './modules/utility.js'
     load: variableUrl => {
       return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest()
-        console.log('Requesting data from API')
         request.open('GET', variableUrl, true)
         request.addEventListener('load', () => {
           if (request.status == 200) {
             const data = api.parse(request.responseText)
             data.cards.sort((a, b) => (Number(a.number) > Number(b.number)) || a.number.includes('a') ? 1 : -1)
-            console.log(data)
-            console.log('API returned ' + data.cards.length + ' cards')
             resolve(data)
           }
           if (request.status >= 400) {
             reject(error)
-            console.log('Something went wrong!')
+            throw new error('Something went wrong with getting the data!')
           }
         })
         request.send()
@@ -136,7 +122,6 @@ import { utility } from './modules/utility.js'
         </section>
         `
       })
-      console.log('Rendered ' + listOfCards.length + ' cards')
       if (listOfCards.length == 0) {
         render.main.innerHTML = `
         <h1>No cards found :(</h1>
@@ -170,7 +155,7 @@ import { utility } from './modules/utility.js'
             ${data.ability ? `
               <h3 class="ability">${data.ability.name}</h3>
               <p>${data.ability.text}</p>`
-               : null
+               : ''
             }
   					${render.renderAttacks(data.attacks)}
             ${render.checkEmpty(data.text, 'p')}
@@ -260,14 +245,12 @@ import { utility } from './modules/utility.js'
     inputListen: () => {
       // eventListener to any change on the input element
       search.textInput.addEventListener('keyup', () => {
-        console.log('Heard a change on Input')
         search.execute()
       })
     },
     radioListen: () => {
       search.radioList.forEach(currentRadio => {
         currentRadio.addEventListener('click', e => {
-          console.log('Heard a change on radio')
           if (currentRadio.checked) {
             render.updateSearch(currentRadio.value)
             search.execute(e)
@@ -300,7 +283,6 @@ import { utility } from './modules/utility.js'
       routie({
         '': () => {
           dataObject.getData(config.url()).then(data => {
-            console.log('Routie on route "/" is triggered.')
             render.allCards(data)
             dataObject.setStorage(data)
           })
@@ -314,39 +296,28 @@ import { utility } from './modules/utility.js'
         '/cards/:id': id => {
           dataObject.getData(config.url()).then(data => {
             const currentCard = dataObject.matchData(data, 'id', id).cards
-            console.log(
-              'Showing single page for ' +
-                currentCard.length +
-                ' card with name "' +
-                currentCard[0].name +
-                '"'
-            )
             render.main.innerHTML = render.singleCard(currentCard[0])
           })
         },
         '/search&name=:inputValue': inputValue => {
-          console.log('Searching for NAME: ' + inputValue)
           dataObject.getData(config.url()).then(data => {
             const newData = dataObject.filterData(data, 'name', inputValue)
             render.allCards(newData)
           })
         },
         '/search&type=:inputValue': inputValue => {
-          console.log('Searching for TYPE: ' + inputValue)
           dataObject.getData(config.url()).then(data => {
             const newData = dataObject.filterData(data, 'types', inputValue)
             render.allCards(newData)
           })
         },
         '/search&rarity=:inputValue': inputValue => {
-          console.log('Searching for RARITY: ' + inputValue)
           dataObject.getData(config.url()).then(data => {
             const newData = dataObject.filterData(data, 'rarity', inputValue)
             render.allCards(newData)
           })
         },
         '/search&text=:inputValue': inputValue => {
-          console.log('Searching for CARDTEXT: ' + inputValue)
           dataObject.getData(config.url()).then(data => {
             const newData = dataObject.filterData(data, 'text', inputValue)
             render.allCards(newData)
@@ -354,9 +325,7 @@ import { utility } from './modules/utility.js'
         },
         '/set/:set': set => {
           config.userSet = set
-          console.log(set)
           dataObject.getData(config.url()).then( data => {
-            console.log(data)
             render.allCards(data)
             render.refreshTitle(data)
             dataObject.setStorage(data)
