@@ -13,7 +13,7 @@ body {
 
 header {
   width: 100%;
-  position: sticky;
+  z-index: 1;
   padding: 16px 0;
   background-color: rgba(61, 61, 200, 0.25);
   background:  linear-gradient(rgba(175, 25, 32, 0.55),rgba(175, 25, 32, 0.65));
@@ -33,11 +33,12 @@ h1 {
 }
 
 main {
-  margin: 0 auto;
+  margin: 0 auto 24px;
   padding: 24px 24px 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 16px;
+  min-height: 76vh;
   max-width: 1350px;
 }
 
@@ -69,35 +70,17 @@ main {
 
 .singleAttack {
   margin-top: 1em;
-  border-top: 0.1em solid rgba(56, 56, 56, 0.35);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  border-bottom: 0.1em solid rgba(56, 56, 56, 0.35);
   padding: 16px 0;
-}
-
-.singleAttack .attackDescription {
-  margin: 16px 0;
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  row-gap: 16px;
 }
 
-.attackCost,
-.attackDamage {
-  width: 20%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-}
-
-.attackDamage {
-  justify-content: flex-end;
-  transform: scaleX(1.05) translateX(-1em);
-}
-
-.attackCost {
-  justify-content: flex-start;
+.attackDescription {
+  grid-column: span 3;
+  width: 100%;
 }
 
 input[type='text']{
@@ -110,10 +93,12 @@ input[type='text']{
   border-bottom: 0em solid rgba(56, 56, 56, 0.35);
   border-radius: 4px;
   padding-left: 8px;
+  min-width: 250px;
 }
 
 input:focus {
   transition: 0.15s linear all;
+  outline: normal;  
   box-shadow: 0 0 8px rgba(56, 56, 56, 0.35);
 }
 
@@ -140,6 +125,8 @@ label {
   border: 2px solid rgba(175, 25, 32, 0.85);
   cursor: pointer;
   transition: background-color 0.15s linear;
+  min-width: 125px;
+  text-align: center;
 }
 
 main h2 {
@@ -173,6 +160,7 @@ main .smallCard:hover .previewImage {
   box-shadow: 0 4px 8px rgba(56, 56, 56, 0.35);
   border: 1px solid rgba(56, 56, 56, 0.40);
   cursor: default;
+  max-width: 1000px;
 }
 
 .half {
@@ -209,6 +197,14 @@ main .smallCard:hover .previewImage {
   content: 'HP';
   font-size: 0.5em;
   margin-right: 0.5em;
+}
+
+.detailsHp h3 {
+  margin-right: 8px;
+}
+
+.cardDetails em {
+  font-size: 14px;
 }
 
 
@@ -255,6 +251,34 @@ main .smallCard:hover .previewImage {
   margin: 0;
   display: inline-block;
   transform: translateY(5px);
+}
+
+/* Footer */
+
+footer {
+  background-color: rgba(56, 56, 56, 0.15);
+  color:  rgba(56, 56, 56, 1);
+  display: flex;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+footer p {
+  padding: 8px 0;
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+footer a, footer a:link {
+  color:  rgba(36, 36, 36, 1);
+}
+
+footer svg:hover,
+footer a:hover {
+  color: rgba(175, 25, 32, 1); 
+  fill: rgba(175, 25, 32, 1);
 }
 
 /* SPRITES  */

@@ -44,7 +44,9 @@ import { utility } from './modules/utility.js'
         }
 
         if (key === 'text') {
-          return checkFilter('name', x)
+          if (checkFilter('name', x)) {
+            return true
+          }
         }
 
         if (key === 'text' && x.ability) {
@@ -148,7 +150,12 @@ import { utility } from './modules/utility.js'
               ${render.checkEmpty(data.hp, 'h3')}
   						${render.checkEmpty(render.costToImage(data.types), 'p')}
   					</section>
-  					<p>${data.subtype}</p>
+            <p>
+              <em>
+                ${data.subtype} 
+                ${data.evolvesFrom ? `(evolves from ${data.evolvesFrom})`: ''}
+              </em>
+            </p>
   				</section>
 
   				<section class='cardAttacks'>
@@ -162,14 +169,34 @@ import { utility } from './modules/utility.js'
   				</section>
 
           <section class="cardFooter">
-          <p>${data.number}</p>
-          <img src="https://images.pokemontcg.io/${data.setCode}/symbol.png" 
-            class="setImage"
-          />
-            <section class="cardArtist">
-              <h3>Artist:</h3>
-              <p>${data.artist}</p>
-  				</section>
+          ${data.weaknesses ? (`
+            <section class="weakness">
+              <h4>Weakness</h4>
+              <p>${render.costToImage([data.weaknesses[0].type])} ${data.weaknesses[0].value}</p>
+            </section>`
+          ) : ''}
+          ${data.resistances ? (`
+            <section class="resistance">
+              <h4>Resistance</h4>
+              <p>${render.costToImage([data.resistances[0].type])} ${data.resistances[0].value}</p>
+            </section>`
+          ) : ''}
+          
+          ${data.resistances ? (`
+            <section class="retreat">
+              <h4>Retreat</h4>
+              <p>${render.costToImage(data.retreatCost)}</p>
+            </section>`
+          ) : ''}
+          
+            <p>#${data.number}</p>
+            <img src="https://images.pokemontcg.io/${data.setCode}/symbol.png" 
+              class="setImage"
+            />
+              <section class="cardArtist">
+                <h3>Artist:</h3>
+                <p>${data.artist}</p>
+            </section>
           </section>
   			</section>
   		</section>
