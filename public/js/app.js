@@ -145,7 +145,7 @@ import { utility } from './modules/utility.js'
   				<section class='right half'>
 
   				<section class='cardDetails'>
-  					<h3>${data.name}</h3>
+  					<h2>${data.name}</h2>
             <section class='detailsHp'>
               ${render.checkEmpty(data.hp, 'h3')}
   						${render.checkEmpty(render.costToImage(data.types), 'p')}
@@ -160,42 +160,55 @@ import { utility } from './modules/utility.js'
 
   				<section class='cardAttacks'>
             ${data.ability ? `
-              <h3 class="ability">${data.ability.name}</h3>
-              <p>${data.ability.text}</p>`
+            <section class="ability">
+              <h4><i>${data.ability.type}: ${data.ability.name}</i></h4>
+              <p>${data.ability.text}</p>
+            </section>`
                : ''
             }
-  					${render.renderAttacks(data.attacks)}
-            ${render.checkEmpty(data.text, 'p')}
+            ${render.renderAttacks(data.attacks)}
+            ${data.text && data.supertype !== "Pokémon" ? `<p>${data.text}</p>` : ''}
   				</section>
 
           <section class="cardFooter">
-          ${data.weaknesses ? (`
-            <section class="weakness">
-              <h4>Weakness</h4>
-              <p>${render.costToImage([data.weaknesses[0].type])} ${data.weaknesses[0].value}</p>
-            </section>`
-          ) : ''}
-          ${data.resistances ? (`
-            <section class="resistance">
-              <h4>Resistance</h4>
-              <p>${render.costToImage([data.resistances[0].type])} ${data.resistances[0].value}</p>
-            </section>`
-          ) : ''}
-          
-          ${data.resistances ? (`
-            <section class="retreat">
-              <h4>Retreat</h4>
-              <p>${render.costToImage(data.retreatCost)}</p>
-            </section>`
-          ) : ''}
-          
-            <p>#${data.number}</p>
-            <img src="https://images.pokemontcg.io/${data.setCode}/symbol.png" 
-              class="setImage"
-            />
+            ${data.text && data.supertype === "Pokémon" ? `<p>${data.text}</p>` : ''}
+
+            ${data.weaknesses ? (`
+              <section class="weakness">
+                <h4>Weakness</h4>
+                <p>${render.costToImage([data.weaknesses[0].type])} ${data.weaknesses[0].value}</p>
+              </section>`
+            ) : ''}
+
+            ${data.resistances ? (`
+              <section class="resistance">
+                <h4>Resistance</h4>
+                <p>${render.costToImage([data.resistances[0].type])} ${data.resistances[0].value}</p>
+              </section>`
+            ) : ''}
+            
+            ${data.supertype == "Pokémon" ? (`
+              <section class="retreat">
+                <h4>Retreat</h4>
+                <p>
+                  ${
+                    render.costToImage(data.retreatCost) || 
+                    `<i style=" width: 25px; height:25px; display: inline-block;"></i>`
+                  }
+                </p>
+              </section>`
+            ) : ''}
+              
+              <p>#${data.number}</p>
+              <i class="${data.rarity.toLowerCase()}"></i>
+              <img src="https://images.pokemontcg.io/${data.setCode}/symbol.png" 
+                class="setImage"
+              />
+              
               <section class="cardArtist">
                 <h3>Artist:</h3>
                 <p>${data.artist}</p>
+              </section>
             </section>
           </section>
   			</section>
@@ -321,10 +334,18 @@ import { utility } from './modules/utility.js'
           })
         },
         '/cards/:id': id => {
-          dataObject.getData(config.url()).then(data => {
-            const currentCard = dataObject.matchData(data, 'id', id).cards
-            render.main.innerHTML = render.singleCard(currentCard[0])
-          })
+          if (id.split('-')[0] === config.userSet) {
+            dataObject.getData(config.url()).then(data => {
+              const currentCard = dataObject.matchData(data, 'id', id).cards
+              render.main.innerHTML = render.singleCard(currentCard[0])
+            })
+          } else {
+            config.userSet = id.split('-')[0]
+            dataObject.getData(config.url()).then(data => {
+              const currentCard = dataObject.matchData(data, 'id', id).cards
+              render.main.innerHTML = render.singleCard(currentCard[0])
+            })
+          }
         },
         '/search&name=:inputValue': inputValue => {
           dataObject.getData(config.url()).then(data => {
@@ -352,6 +373,7 @@ import { utility } from './modules/utility.js'
         },
         '/set/:set': set => {
           config.userSet = set
+          window.localStorage.setItem('userSet', set)
           dataObject.getData(config.url()).then( data => {
             render.allCards(data)
             render.refreshTitle(data)

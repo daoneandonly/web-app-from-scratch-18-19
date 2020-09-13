@@ -129,11 +129,6 @@ label {
   text-align: center;
 }
 
-main h2 {
-  width: 100%;
-}
-
-
 main .left img {
   width: 100%;
   border-radius: 8px;
@@ -176,9 +171,18 @@ main .smallCard:hover .previewImage {
   width: 100%;
 }
 
-.ability {
+.ability h4{
   color: darkred;
   font-weight: 900;
+}
+
+.ability p {
+  padding: 8px 0;
+}
+
+.ability {
+  border-bottom: 0.1em solid rgba(56, 56, 56, 0.35);
+  padding: 16px 0;
 }
 
 .cardDetails,
@@ -340,6 +344,53 @@ footer a:hover {
 
 .water {
   background-position: -75px -50px;
+}
+
+/* Rarities */
+
+.common, .uncommon, .rare {
+  color: black;
+  font-style: normal;
+  font-size: 1.5rem;
+}
+
+.common::before {
+  content: '●'
+}
+
+.uncommon::before {
+  content: '◆'
+}
+
+.rare::before {
+  content: '★'
+}
+
+.holo::before {
+  font-size: 1.35rem;
+  -webkit-text-stroke: 1px black;
+  -webkit-text-fill-color: goldenrod;
+}
+
+.secret::before {
+  color: goldenrod;
+}
+
+.gx::before, .ex::before {
+  font-size: 1rem;
+  -webkit-text-stroke: 1px black;
+  -webkit-text-fill-color:black;
+  font-weight: normal;
+  font-style: italic;
+  content: 'GX';
+}
+
+.gx::before {
+  content: 'GX';
+}
+
+.ex::before {
+  content: 'EX';
 }
 
 .damage {
