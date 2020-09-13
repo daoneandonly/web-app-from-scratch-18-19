@@ -1,49 +1,62 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700,900');
 
 * {
-  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   /* border: 1px solid red; */
 }
 
 body {
   font-family: 'Lato';
   color: #383838;
-  background-color: rgba(56, 56, 56, 0.01);
-  margin-bottom: 5em;
+  background-color: rgba(61, 61, 200, 0.1);
 }
 
-h1 {
-  font-size: 3em;
-}
-
-main {
+header {
   width: 100%;
-  display: flex;
+  position: sticky;
+  padding: 16px 0;
+  background-color: rgba(61, 61, 200, 0.25);
+  background:  linear-gradient(rgba(175, 25, 32, 0.55),rgba(175, 25, 32, 0.65));
+  box-shadow: 0 0 16px rgba(56, 56, 56, 0.35);
+  display: flex; 
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.card {
-  color: #383838;
-  height: auto;
+h1 {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  min-height: 33vw;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 3em;
+  font-weight: 900;
+  color: white
+}
+
+main {
+  margin: 0 auto;
+  padding: 24px 24px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 16px;
+  max-width: 1350px;
 }
 
 .smallCard {
-  margin: auto;
-  max-width: 15%;
-  min-width: 15em;
-  width: 50%;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 240px;
+}
+
+.smallCard img  {
+  box-shadow: 0 0 8px rgba(56, 56, 56, 0.35);
 }
 
 .smallCard:hover img {
   transform-origin: center;
   transition: 0.15s ease-in-out all;
-  transform: scale(1.025);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px 2px rgba(56, 56, 56, 0.25);
 }
 
 .card:nth-of-type(4n + 0),
@@ -82,73 +95,87 @@ main {
   justify-content: flex-start;
 }
 
-input[type='text'],
-input:focus {
-  font-family: arial;
-  font-size: 2em;
-  line-height: 1.6em;
+input[type='text']{
+  font-family: monospace;
   border: none;
   color: rgba(56, 56, 56, 0.65);
   outline: none;
-  font-weight: 600;
-  padding: 0.2em;
+  font-weight: 700;
   transition: 0.15s linear all;
   border-bottom: 0em solid rgba(56, 56, 56, 0.35);
-  width: auto;
-}
-
-input {
-  display: inline-block;
-  border-radius: 0.1em;
-  margin-bottom: 0.5em;
+  border-radius: 4px;
+  padding-left: 8px;
 }
 
 input:focus {
   transition: 0.15s linear all;
-  border-bottom: 0.1em solid rgba(56, 56, 56, 0.35);
+  box-shadow: 0 0 8px rgba(56, 56, 56, 0.35);
 }
 
 input::placeholder {
   border: none;
-  color: rgba(56, 56, 56, 0.35);
+  color: rgba(56, 56, 56, 0.45);
   outline: none;
+}
+
+input[type='radio'] {
+  display: none;
+}
+
+input[type='radio']:checked + label {
+  background-color: rgba(175, 25, 32, 0.85);
+  font-weight: 700;
+}
+
+label {
+  padding: 8px;
+  margin: 0 8px;
+  color: white;
+  border-radius: 4px;
+  border: 2px solid rgba(175, 25, 32, 0.85);
+  cursor: pointer;
+  transition: background-color 0.15s linear;
 }
 
 main h2 {
   width: 100%;
 }
 
-main .left {
-  margin: auto;
-  display: flex;
-  justify-content: center;
-}
-
-.half {
-  width: 40%;
-}
 
 main .left img {
-  width: 95%;
-  height: 95%;
-  max-height: 80vh;
-  transform-origin: center;
-  transition: 0.15s ease-in-out all;
+  width: 100%;
+  border-radius: 8px;
 }
 
 main .smallCard .previewImage {
   transition: 0.05s ease-in-out all;
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
 }
 
 main .smallCard:hover .previewImage {
   transform-origin: center;
   transition: 0.15s ease-in-out all;
-  transform: scale(1.025);
 }
 
-main .right {
-  margin: 1em 0;
-  width: 58%;
+.card {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(56, 56, 56, 0.35);
+  border: 1px solid rgba(56, 56, 56, 0.40);
+  cursor: default;
+}
+
+.half {
+  padding: 16px;
+  margin: 0 auto;
+}
+
+.right {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -162,19 +189,7 @@ main .right {
   flex-wrap: wrap;
 }
 
-.cardDetails {
-  align-content: flex-start;
-}
-
 .cardDetails > *:last-child {
-  width: 100%;
-}
-
-.detailsHp > * {
-  margin-right: 0.2rem;
-}
-
-.left .previewImage {
   width: 100%;
 }
 
@@ -184,8 +199,13 @@ main .right {
   margin-right: 0.5em;
 }
 
+.singleAttack {
+  padding: 16px 0;
+}
+
 .back {
   width: 100%;
+  grid-column:span 2;
 }
 
 .back button {
@@ -197,7 +217,10 @@ main .right {
   color: white;
   background-color: rgba(56, 56, 56, 0.35);
   line-height: 2em;
-  /* opacity: 0.5; */
+  cursor: pointer;
+  padding: 8px 0;
+  border-radius: 8px 8px 0 0;
+  transition: background-color 0.15s linear;
 }
 
 .back button:hover {
@@ -206,7 +229,7 @@ main .right {
 
 /* SPRITES  */
 .energy {
-  background-image: url('https://pokemontcg.io/assets/images/energy-types-f0fdba3b2e216b418fbedace0c050f36.png');
+  background-image: url('https://pokemontcg.io/static/media/energy-types.f0fdba3b.png');
   width: 25px;
   height: 25px;
   display: inline-block;
@@ -271,16 +294,27 @@ main .right {
   font-stretch: ultra-expanded;
 }
 
-.cardArtist {
+.cardFooter {
   color: rgba(56, 56, 56, 0.6);
   font-stretch: extra-condensed;
+  justify-self: flex-end;
+  font-size: 0.9rem;
 }
 
+.cardFooter > *,
 .cardArtist > * {
-  display: inline-block;
   font-size: 0.9rem;
-  align-self: flex-end;
+  display: inline-block;
 }
+
+.setImage {
+  width: 25px;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  transform: translateY(5px);
+}
+
 .lds-dual-ring {
   margin-top: 10em;
   display: inline-block;
@@ -304,16 +338,5 @@ main .right {
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-
-@media (min-width: 500px) {
-  .half {
-    width: 40%;
-  }
-
-  .card {
-    width: 70%;
-    min-height: 33vw;
   }
 }

@@ -1,22 +1,22 @@
+// Config file
 import { config } from './modules/config.js'
+
+// Helper functions
 import { utility } from './modules/utility.js'
 
-// router.routie()
 ;(() => {
   'use strict'
-
-  console.log('Hello Pokémon fan.')
 
   const dataObject = {
     localStorage: () => {
       return window.localStorage
     },
     setStorage: data => {
-      dataObject.localStorage().setItem('data', JSON.stringify(data))
+      dataObject.localStorage().setItem(config.currentSet(), JSON.stringify(data))
     },
     getData: variableUrl => {
-      if (dataObject.localStorage() != '') {
-        console.log('Found local data')
+      if (dataObject.localStorage().getItem(config.currentSet())) {
+        console.log(`Found local data of set ${config.currentSet()}`)
         return new Promise((resolve, reject) => {
           resolve(dataObject.getStorage())
         })
@@ -25,7 +25,7 @@ import { utility } from './modules/utility.js'
       }
     },
     getStorage: () => {
-      return api.parse(dataObject.localStorage().getItem('data'))
+      return api.parse(dataObject.localStorage().getItem(config.currentSet()))
     },
     filterData: (data, key, filterWord) => {
       console.log(
@@ -81,6 +81,8 @@ import { utility } from './modules/utility.js'
         request.addEventListener('load', () => {
           if (request.status == 200) {
             const data = api.parse(request.responseText)
+            data.cards.sort((a, b) => (Number(a.number) > Number(b.number)) || a.number.includes('a') ? 1 : -1)
+            console.log(data)
             console.log('API returned ' + data.cards.length + ' cards')
             resolve(data)
           }
@@ -120,10 +122,7 @@ import { utility } from './modules/utility.js'
         render.main.innerHTML = listOfCards.join('')
       }
     },
-    singleCard: data => {
-      // function that handles individual cards
-      // create a string of html for the card
-      let format = `
+    singleCard: data => (`
   		<section class="card">
       <a href="#/overview" class='back'><button>← Back to list</button></a>
   			<section class='left half'>
@@ -137,7 +136,7 @@ import { utility } from './modules/utility.js'
   				<section class='cardDetails'>
   					<h3>${data.name}</h3>
   					<section class='detailsHp'>
-  						${render.checkEmpty(data.hp, 'h3')}
+              ${render.checkEmpty(data.hp, 'h3')}
   						${render.checkEmpty(render.costToImage(data.types), 'p')}
   					</section>
   					<p>${data.subtype}</p>
@@ -145,19 +144,23 @@ import { utility } from './modules/utility.js'
 
   				<section class='cardAttacks'>
   					${render.renderAttacks(data.attacks)}
-  					${render.checkEmpty(data.text, 'p')}
+            ${render.checkEmpty(data.text, 'p')}
   				</section>
 
-  				<section class="cardArtist">
-  					<h3>Artist:</h3>
-  					<p>${data.artist}</p>
+          <section class="cardFooter">
+          <p>${data.number}</p>
+          <img src="https://images.pokemontcg.io/${data.setCode}/symbol.png" 
+            class="setImage"
+          />
+            <section class="cardArtist">
+              <h3>Artist:</h3>
+              <p>${data.artist}</p>
   				</section>
+          </section>
   			</section>
   		</section>
   		`
-      // insert format within main element
-      return format
-    },
+    ),
     costToImage: cost => {
       // loop through the text value of an attack and use the <i> as a symbol for every value
       if (cost === undefined) {
@@ -267,7 +270,7 @@ import { utility } from './modules/utility.js'
       render.updateSearch('name')
       routie({
         '': () => {
-          api.load(config.url()).then(data => {
+          dataObject.getData(config.url()).then(data => {
             console.log('Routie on route "/" is triggered.')
             render.allCards(data)
             render.refreshTitle(data)
@@ -277,7 +280,7 @@ import { utility } from './modules/utility.js'
         '/overview': () => {
           dataObject.getData(config.url()).then(data => {
             render.allCards(data)
-            search.textInput.value = ''
+            // search.textInput.value = ''
           })
         },
         '/cards/:id': id => {
@@ -320,12 +323,20 @@ import { utility } from './modules/utility.js'
             const newData = dataObject.filterData(data, 'text', inputValue)
             render.allCards(newData)
           })
+        },
+        '/set/:set': set => {
+          config.userSet = set
+          console.log(set)
+          dataObject.getData(config.url()).then( data => {
+            console.log(data)
+            render.allCards(data)
+            render.refreshTitle(data)
+            dataObject.setStorage(data)
+          })
         }
       })
     }
   }
-
-  // router.routie()
 
   app.start()
 })()
