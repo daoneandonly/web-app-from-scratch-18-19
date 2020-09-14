@@ -3,5 +3,7 @@ export const config = {
   defaultSet: 'swsh2',
   userSet: window.localStorage.getItem('userSet'),
   currentSet: () => (config.userSet ? config.userSet : config.defaultSet),
-  url: () => (config.baseUrl + config.currentSet())
+  url: () => (config.baseUrl + config.currentSet()),
+  setListUrl: 'https://api.pokemontcg.io/v1/sets',
+  standardLegalUrl: 'https://api.pokemontcg.io/v1/sets?standardLegal=true'
 }

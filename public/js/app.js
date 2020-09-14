@@ -11,20 +11,26 @@ import { utility } from './modules/utility.js'
     localStorage: () => {
       return window.localStorage
     },
-    setStorage: data => {
-      dataObject.localStorage().setItem(config.currentSet(), JSON.stringify(data))
+    setStorage: (data, type = config.currentSet()) => {
+      dataObject.localStorage().setItem(type, JSON.stringify(data))
     },
-    getData: variableUrl => {
-      if (dataObject.localStorage().getItem(config.currentSet())) {
+    getData: (variableUrl, type = config.currentSet()) => {
+      console.log(type)
+      if (dataObject.localStorage().getItem(type)) {
         return new Promise((resolve, reject) => {
-          resolve(dataObject.getStorage())
+          resolve(dataObject.getStorage(type))
         })
       } else {
         return api.load(variableUrl)
       }
     },
-    getStorage: () => {
-      return api.parse(dataObject.localStorage().getItem(config.currentSet()))
+    getSetData: () => {
+      dataObject.getData(config.standardLegalUrl, name).then(data => {
+        return data
+      })
+    },
+    getStorage: (type) => {
+      return api.parse(dataObject.localStorage().getItem(type))
     },
     filterData: (data, key, filterWord) => {
       if (filterWord == '') {
@@ -95,7 +101,9 @@ import { utility } from './modules/utility.js'
         request.addEventListener('load', () => {
           if (request.status == 200) {
             const data = api.parse(request.responseText)
-            data.cards.sort((a, b) => (Number(a.number) > Number(b.number)) || a.number.includes('a') ? 1 : -1)
+            if (data.cards) {
+              data.cards.sort((a, b) => (Number(a.number) > Number(b.number)) || a.number.includes('a') ? 1 : -1)
+            }
             resolve(data)
           }
           if (request.status >= 400) {
@@ -378,6 +386,18 @@ import { utility } from './modules/utility.js'
             render.allCards(data)
             render.refreshTitle(data)
             dataObject.setStorage(data)
+          })
+        },
+        '/standard-legal-sets': () => {
+          dataObject.getData(config.standardLegalUrl, 'setData').then(data =>{
+            data.sets.sort((a,b) => new Date(a.releaseDate) < new Date(b.releaseDate) ? 1 : -1)
+            dataObject.setStorage(data, 'setData')
+            render.main.innerHTML = 
+            `<ul class="setList">
+              ${data.sets.map(set => (
+                `<li><a href="#/set/${set.code}">${set.name}</a></li>`
+              )).join(' ')}
+            </ul>`
           })
         }
       })
