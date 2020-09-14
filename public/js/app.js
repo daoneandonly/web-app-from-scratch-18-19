@@ -257,7 +257,7 @@ import { utility } from './modules/utility.js'
       return listOfAttacks
     },
     refreshTitle: data => {
-      const header = document.querySelector('h1')
+      const header = document.querySelector('.subtitle')
       const titleMessage =
         data.cards[0].series +
         ' ' +
@@ -265,7 +265,7 @@ import { utility } from './modules/utility.js'
         ' (' +
         data.cards.length +
         ' cards)'
-      document.title = 'PokémonTCG Webapp: ' + titleMessage
+      // document.title = 'PokémonTCG Webapp: ' + titleMessage
       header.innerHTML = titleMessage
     },
     updateSearch: searchBy => {
@@ -290,6 +290,13 @@ import { utility } from './modules/utility.js'
   const search = {
     textInput: document.querySelector('.searchField'),
     radioList: document.querySelectorAll('input[type=radio]'),
+    submitListen: () => {
+      search.textInput.addEventListener('submit', (e) => {
+        console.log('heard submit');
+        e.preventDefault()
+        e.target.blur()
+      })
+    },
     inputListen: () => {
       // eventListener to any change on the input element
       search.textInput.addEventListener('keyup', () => {
@@ -327,6 +334,7 @@ import { utility } from './modules/utility.js'
     start: () => {
       search.inputListen()
       search.radioListen()
+      search.submitListen()
       render.updateSearch('name')
       routie({
         '': () => {
